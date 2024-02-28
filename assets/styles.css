@@ -1,0 +1,153 @@
+@font-face{
+    font-family: 'proxima-nova';
+    src: url('/assets/Proxima Nova Font.otf');
+}
+*{
+    font-family: 'proxima-nova';
+    /* border: 1px dotted red; */
+}
+body{
+    background-color: rgba(243, 248, 253, 1);
+    font-size: 0;
+    display: table;
+    width: 100%;
+    position: relative;    
+}
+.container-tab, .content{
+    display: inline-block;
+    vertical-align: top;
+    font-size: 16px;
+    display: table-cell;
+}
+.container-tab{
+    width: 5%;
+    border-right: 1px solid #E5EDF5;
+    background-color: #ffff;
+}
+    .container-tab img{
+        display: block;
+        margin: 20px auto;
+    }
+    .container-tab a{
+        display: block;
+        background-color: rgba(243, 248, 253, 1);
+        border-radius: 15px;
+        padding: 15px 0;
+        margin: 5px;
+    }
+        .container-tab a img{
+            width: 21px;
+            margin: 0 auto;
+        }
+.content{
+    width: 95%;
+}
+    .content nav{
+        box-shadow: 0 4px 4px rgba(0, 0, 0, 0.03);
+        background-color: #ffff;
+        padding: 0 50px;
+    }
+/* Navigation */
+        nav img, nav h1, nav a{
+            display: inline-block;
+            vertical-align: middle;
+        }
+        nav h1{
+            font-size: 22px;
+            color: #ADA9C0;
+            font-weight: 700;
+            padding-left: 20px;
+            width: 79%;
+        }
+/* Sign out account */
+        nav a{
+            border: 1px solid rgba(156, 137, 255, 1);
+            text-decoration: none;
+            padding: 5px;
+            border-radius: 10px;
+            font-weight: 400;
+            color: rgba(156, 137, 255, 1);
+            width: 80px;
+            height: 20px;
+            text-align: center;
+            line-height: 20px;
+        }
+        #login{
+            background-color: rgba(156, 137, 255, 1);
+            color: #ffff;
+        }
+/* Log in account */
+    #nav_login{
+        padding: 0;
+        padding-left: 50px;
+    }
+        #nav_login h1{
+            width: 88%;
+        }
+        #nav_login div{
+            display: inline-block;    
+            border-left: 1px solid rgba(229, 237, 245, 1);
+        }
+        #nav_login div img{
+            padding: 6.5px 0;
+            margin-left: 10px;
+            display: inline-block;
+        }
+        #expand_more{
+            color: rgba(229, 237, 245, 1);
+        }
+/*  */
+    .content main{
+        padding: 50px;
+    }
+        main header form{
+            white-space: nowrap;
+            font-size: 0;
+            border-right: 1px solid rgba(192, 205, 218, 1);
+            padding-right: 25px;
+        }
+        header form, header a{
+            display: inline-block;
+            vertical-align: middle;
+        }
+            header form label, header form button{
+                display: inline-block;
+                font-size: 16px;
+                vertical-align: top;
+            }
+                input[name="search"], header form button, header a{
+                    border: none;
+                    padding: 15px;
+                }
+                input[name="search"]{
+                    font-size: 16px;
+                    font-weight: 400px;
+                    width: 350px;
+                    border-top-left-radius: 10px;
+                    border-bottom-left-radius: 10px;
+                    border-top: 1px solid rgba(212, 225, 236, 1);
+                    border-left: 1px solid rgba(212, 225, 236, 1);
+                    border-bottom: 1px solid rgba(212, 225, 236, 1);
+                }
+            header form button{
+                background-color: #ffff;
+                border-top-right-radius: 10px;
+                border-bottom-right-radius: 10px;
+                border-top: 1px solid rgba(212, 225, 236, 1);
+                border-right: 1px solid rgba(212, 225, 236, 1);
+                border-bottom: 1px solid rgba(212, 225, 236, 1);
+            }
+                .fa-magnifying-glass{
+                    color: rgba(156, 137, 255, 1);
+                }
+            header a{
+                background-color: rgba(156, 137, 255, 1);
+                border-radius: 10px;
+                text-decoration: none;
+                color: rgba(255, 255, 255, 1);
+                margin-left: 20px;
+            }
+                .fa-cart-shopping{
+                    padding-right: 10px;
+                    color: rgba(215, 209, 255, 1);
+                }
