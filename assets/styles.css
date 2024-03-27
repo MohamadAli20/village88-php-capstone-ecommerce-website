@@ -4,7 +4,6 @@
 }
 *{
     font-family: 'proxima-nova';
-    /* border: 1px dotted red; */
 }
 body{
     background-color: rgba(243, 248, 253, 1);
@@ -80,6 +79,7 @@ body{
     #nav_login{
         padding: 0;
         padding-left: 50px;
+        position: relative;
     }
         #nav_login h1{
             width: 88%;
@@ -87,6 +87,14 @@ body{
         #nav_login div{
             display: inline-block;    
             border-left: 1px solid rgba(229, 237, 245, 1);
+            position: absolute;
+            top: 0;
+            right: 0;
+            /* width: 250px; */
+            padding: 0 10px; 
+        }
+        #nav_login div h3{
+            display: inline-block;
         }
         #nav_login div img{
             padding: 6.5px 0;

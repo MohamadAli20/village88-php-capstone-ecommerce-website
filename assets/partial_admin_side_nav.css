@@ -1,0 +1,115 @@
+*{
+    box-sizing: border-box;
+}
+body{
+    font-size: 16px;
+}
+.admin_side_tab{
+    width: 10%;
+    border-right: 1px solid black;
+}
+main{
+    width: 90%;
+}
+.admin_side_tab, main{
+    display: inline-block;
+    vertical-align: top;
+    height: 100vh;
+}
+    .admin_side_tab, .admin_nav{
+        background-color: gray;
+    }
+    .admin_side_tab img{
+        width: 50px;
+    }
+    .admin_side_tab img, .admin_side_tab a{
+        display: block;
+        padding: 10px;
+    }
+main{
+    padding: 0;
+    margin: 0;
+}
+    main .admin_nav{
+        padding: 20px;
+        text-align: right;
+        border-bottom: 1px solid black;
+    }
+        .admin_nav h2{
+            margin: 0;
+        }
+    main form{
+        padding: 0 20px;
+    }
+        main form label input{
+            width: 300px;
+        }
+    main div{
+        display: inline-block;
+        vertical-align: top;
+        padding: 10px 20px;
+    }
+    main .category{
+        width: 15%;
+    }
+        .category p{
+            border: 1px solid black;
+            text-align: center;
+            padding: 20px 0;
+            border-radius: 10px;
+        }
+    main .show_category{
+        width: 80%;
+    }
+        .show_category ul{
+            padding: 0;
+            text-align: center;
+        }
+            .show_category ul li{
+                display: inline-block;
+                width: 140px;
+                text-align: center;
+            }
+        .show_category form{
+            text-align: center;
+            border: 1px solid black;
+        }
+            .show_category figure{
+                margin: 0;
+            }
+            .show_category img{
+                width: 50px;
+                height: 50px;
+                border: 1px solid black;
+                display: inline-block;
+                vertical-align: middle;
+            }
+            .show_category figcaption{
+                display: inline-block;
+                vertical-align: middle;
+            }
+            .show_category form figure, .show_category form p, .show_category form label{
+                display: inline-block;
+                width: 140px;
+                text-align: center;
+                vertical-align: middle;
+            }
+    footer{
+        text-align: right;
+        white-space: nowrap;
+        font-size: 0;
+    }
+        footer p{
+            display: inline-block;
+            width: 50px;
+            border: 1px solid black;
+            text-align: center;
+            padding: 5px 0;
+            font-size: 16px;
+        }
+        footer .previous_arrow{
+            border-right: 0;
+        }
+        footer .next_arrow{
+            border-left: 0;
+        }

@@ -21,9 +21,9 @@
                     <i id="remove_product<?=$i?>" class="fa-solid fa-xmark"></i>
                     <div class="remove_modal" id="remove_modal<?=$i?>">
                         <p>Are you sure you want to remove this item?</p>
-                        <button class="btn_cancel"><a href="#">Cancel</a></button>
+                        <button class="btn_cancel" id="cancel<?=$i?>"><a href="#">Cancel</a></button>
                         <!-- Add backend logic -->
-                        <button class="btn_remove"><a href="#">Remove</a></button>
+                        <button class="btn_remove" id="remove<?=$i?>"><a href="#">Remove</a></button>
                     </div>
                 </figure>
 <?php           }   ?>
@@ -59,12 +59,38 @@
                 <p><span>Items</span><span class="fees">$ 40</span></p>
                 <p><span>Shipping Fee</span><span class="fees">$ 40</span></p>
                 <p id="total_fee"><span>Total Fee</span><span id="total_amount" class="fees">$ 40</span></p>
-                <input type="submit" value="Proceed to Checkout">
+                <input id="proceed_checkout" type="submit" value="Proceed to Checkout">
             </div>
         </form>
     </main>
-    <div id="gray_background">
-
-    </div>
+    <form id="payment">
+        <header>
+            <img src="/assets/logo.svg" alt="company logo">
+            <img src="/assets/visa_mastercard.svg" alt="visa and master card logo">
+            <i class="fa-solid fa-xmark"></i>
+        </header>
+        <main>
+        <h3>Card Details</h3>
+        <label>
+            <input type="text" placeholder="Card Name">
+        </label>
+        <label>
+            <input type="text" placeholder="Card Number">
+        </label>
+        <div>
+            <label>
+                <input id="expiration" type="text" placeholder="Expiration">
+            </label>
+            <label>
+                <input id="cvc" type="text" placeholder="CVC">
+            </label>
+        </div>
+        </main>
+        <footer>
+            <p>Total Amount: <span>$45</span></p>
+            <input type="submit" value="Pay">
+        </footer>
+    </form>
+    <div id="gray_background"></div>
 </body>
 </html>

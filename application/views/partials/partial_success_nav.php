@@ -4,7 +4,8 @@
             <img src="/assets/leaf.svg" alt="leaf logo">
             <h1>Let’s order fresh items for you.</h1>
             <div>
-                <img src="/assets/profile_image.svg" alt="user profile image">
+<?php       $name = $this->session->userdata("name");
+?>              <h3><?= $name['first_name'] . " " . $name['last_name']; ?></h3>
                 <img id="expand_more" src="/assets/expand_more.svg" alt="expand more icon">
             </div>
         </nav>  

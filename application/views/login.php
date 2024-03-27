@@ -20,7 +20,7 @@
             right: 25%;
             left: 25%;
         }
-            .signup_result{
+            .login_result{
                 text-align: center;
                 height: 50px;
                 display: block;
@@ -31,7 +31,7 @@
                 header .success{
                     color: green;
                 }
-            .signup_result p{
+            .login_result p{
                 display: inline-block;
                 font-size: 16px;
             }
@@ -112,7 +112,7 @@
     </style>
 </head>
 <body>
-    <header class="signup_result">
+    <header class="login_result">
 <?php   $errors = $this->session->userdata('errors');
         $success = $this->session->userdata('success');
         if(!empty($errors))
@@ -126,32 +126,23 @@
 <?php   $this->session->unset_userdata('success');
         } ?>
     </header>
-    <form id="signup-form" action="/products/register" method="post">
+    <form id="login-form" class="login" action="/products/verify" method="post">
         <img id="logo-login" src="/assets/logo.svg" alt="e-commerce logo of the company">
         <header>
             <img src="/assets/smiley-face.svg" alt="a smiley face">
-            <h3>Signup to order.</h3>
-            <a href="/products/login">Already a member? Login here.</a>
+            <h3>Login to order.</h3>
+            <a href="/products/signup">New Member? Register here.</a>
         </header>
-        <label id="first_name">
-            <input type="text" placeholder="First Name" name="first_name" required>
-        </label>
-        <label id="last_name">
-            <input type="text" placeholder="Last Name" name="last_name" required>
+        <label>
+            <input type="text" placeholder="Email" name="email">
         </label>
         <label>
-            <input type="text" placeholder="Email" name="email" required>
-        </label>
-        <label>
-            <input type="password" placeholder="Password" name="password" required>
-        </label>
-        <label>
-            <input type="password" placeholder="Confirm Password" name="confirm_password" required>
+            <input type="password" placeholder="Password" name="password">
         </label>
         <footer>
             <input type="submit" value="Signup">
         </footer>
-        <a href="/"><i id="close-signup" class="fa-solid fa-circle-xmark"></i></a>
+        <a href="/"><i id="close-login" class="fa-solid fa-circle-xmark"></i></a>
         <img id="login-side-logo" src="/assets/login_side_logo.svg" alt="e-commerce logo with onion leaves in the background">
     </form>
 </body>

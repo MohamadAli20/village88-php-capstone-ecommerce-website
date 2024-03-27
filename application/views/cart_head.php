@@ -11,7 +11,6 @@
     <style>
         #listed_items{
             margin-top: 20px;
-            
         }
             #listed_items div{
                 display: inline-block;
@@ -206,6 +205,81 @@
                 border: 1px solid rgba(233, 141, 141, 1);
                 color: rgba(233, 141, 141, 1);
             }
+        #payment{
+            width: 35%;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0px 4.373316764831543px 21.866580963134766px 0px rgba(0, 0, 0, 0.07);
+            text-align: center;
+            position: absolute;
+            top: 60px;
+            right: 32.5%;
+            left: 32.5%;
+            box-sizing: border-box;
+            display: none;
+        }
+            #payment header{
+                padding: 25px 50px 0px 50px;
+                position: relative;
+                text-align: left;
+            }
+                #payment img{
+                    margin-right: 20px;
+                }
+                #payment i{
+                    position: absolute;
+                    right: 20px;
+                    top: 20px;
+                }
+            #payment main{
+                padding: 20px;
+            }
+                #payment h3{
+                    text-align: left;
+                }
+                #payment input{
+                    width: 90%;
+                    height: 50px;
+                    border-radius: 10px;
+                    border: 1;
+                    border: 1px solid rgba(156, 137, 255, 1);
+                    background: rgba(255, 255, 255, 1);
+                    margin: 10px 0;
+                    padding: 0 20px;
+                }
+                #payment div{
+                    position: relative;
+                    width: 99%;
+                    height: 70px;
+                }
+                    #payment #expiration, #payment #cvc{
+                        width: 39%;
+                        position: absolute;
+                    }
+                    #payment #expiration{
+                        left: 0;
+                    }
+                    #payment #cvc{
+                        right: -2px;
+                    }
+                
+            #payment footer{
+                margin-bottom: 20px;
+            }
+                #payment p{
+                    color: rgba(184, 184, 184, 1);
+                    text-align: right;
+                    margin-right: 50px;
+                }
+                #payment span{
+                    color: rgba(156, 137, 255, 1);
+                    font-size: 22px;
+                }
+                #payment input[type="submit"]{
+                    background: rgba(156, 137, 255, 1);
+                    color: white;
+                    width: 90%;
+                }
     </style>
     <script>
         $(document).ready(function()
@@ -213,20 +287,25 @@
             var background = document.getElementById('gray_background');
 <?php       for($i = 1; $i <= 4; $i++)
             {   ?>
+            var product<?=$i?> = document.getElementById('product<?=$i?>');
+            var remove_modal<?=$i?> = document.getElementById('remove_modal<?=$i?>');
             $('#remove_product<?=$i?>').click(function()
             {
-                var product<?=$i?> = document.getElementById('product<?=$i?>');
-                var remove_modal<?=$i?> = document.getElementById('remove_modal<?=$i?>');
-                product<?=$i?>.style.position = "absolute";
                 product<?=$i?>.style.zIndex = 2;
                 remove_modal<?=$i?>.style.visibility = "visible";
                 background.style.display = "block";
             });
-<?php       }   ?>
-            // var btn_cancel = document.getElementsClassName('btn_cancel')[0];
-            $('.btn_cancel').click(function()
+            $('#cancel<?=$i?>').click(function()
             {
-                console.log('hellow');
+                // product<?=$i?>.style.position = "none";
+                product<?=$i?>.style.zIndex = 1;
+                remove_modal<?=$i?>.style.visibility = "hidden";
+                background.style.display = "none";
+            });
+<?php       }   ?>
+            $("#proceed_checkout").click(function(){
+                // $("#payment").css({"display": "block"});
+                $("#gray_background").css({"display": "block"});
             });
         });
     </script>
