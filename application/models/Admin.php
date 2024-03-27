@@ -6,16 +6,15 @@
         {
             $image_json = array();
             $num = 1;
-            for($i = 0; $i < count($_FILES['images']['tmp_name']); $i++)
+            for($i = 0; $i < count($_FILES['images']); $i++)
             {
-                $image_data = file_get_contents($_FILES['images']['tmp_name'][$i]);
-                $base64_image = base64_encode($image_data);
-                $image_json[$num] = $base64_image; /*add image*/
+                $folder_path = "/assets/images/";
+                $image_path = $folder_path . $_FILES['images']['name'][$i];
+                move_uploaded_file($_FILES['images']['tmp_name'][$i], $image_path);
+                $image_json[$num] = $image_path; /*add image*/
                 $num++;
             }
-            // var_dump($image_json);
             $image_json = json_encode($image_json); /*convert array to json*/
-            
 
             $query = "INSERT INTO products(name, description, category, price, stocks, images, main_image, created_at) VALUES(?,?,?,?,?,?,?,?)";
             $values = array(
@@ -30,14 +29,11 @@
             );
             $this->db->query($query, $values);
         }
-        public function get_products()
+        public function selectAllProducts()
         {
             $query = "SELECT * FROM products";
-            $result = $this->db->query($query)->row_array();
-
-            $data = $result['images'];
-            $jsonArray = json_decode($data, true);
-            var_dump($jsonArray);
+            $result = $this->db->query($query)->result_array();
+            return $result;
         }
     }
 ?>

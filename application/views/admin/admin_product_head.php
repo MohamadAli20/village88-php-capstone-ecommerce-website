@@ -9,7 +9,6 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="/assets/styles.css">
     <link rel="stylesheet" href="/assets/partial_admin_side_nav.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <style>
         body{
             position: relative;
@@ -36,6 +35,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+            display: none;
         }
             .form_add_product h1, 
             .form_add_product label, 
@@ -62,10 +62,6 @@
             padding: 0;
             display: none;
         }
-                input[type="file"] {
-                    /* display: none; */
-                    /* display: block; */
-                }
                 #imagePreview .frame{
                     width: 100px;
                     height: 140px;
@@ -121,9 +117,13 @@
     </style>
     <script>
         $(document).ready(function(){
-            $("#btnPreview").click(function(){
-                $('#imagePreview').css("display", "block");
-            });
+            // $("#btnPreview").click(function(){
+            //     $('#imagePreview').css("display", "block");
+            // });
+
+            // $("#add_product").click(function(){
+            //     console.log("shdhsdh");
+            // });
         });
     </script>
 </head>
