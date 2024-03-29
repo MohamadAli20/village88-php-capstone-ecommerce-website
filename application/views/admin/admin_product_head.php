@@ -95,6 +95,20 @@
                 #imagePreview .checkbox{
                     width: 10px;
                 }
+            #uploadImage{
+                position: relative;
+            }
+                input[type="file"]{
+                    color: transparent;
+                }
+                #uploadImage p{
+                    position: absolute;
+                    top: 0;
+                    left: 120px;
+                    height: 100%;
+                    margin: 0;
+                    line-height: 27px;
+                }
         .form_add_product footer{
             font-size: 16px;
             text-align: right;
@@ -102,6 +116,7 @@
             padding: 10px 0;
         }
             .form_add_product footer #btnPreview, 
+            .form_add_product footer #btnHide,
             .form_add_product footer input{
                 display: inline-block;
             }
@@ -114,17 +129,51 @@
                 pointer-events: none;
                 opacity: 0.5;
             }
+            .form_add_product footer #btnHide{
+                display: none;
+            }
     </style>
     <script>
         $(document).ready(function(){
+            
             $("#btnPreview").click(function(){
-                $('#imagePreview').css("display", "block");
+                $("#imagePreview").css("display", "block");
+                $("#btnPreview").css("display", "none");
+                $("#btnHide").css({
+                    "display": "block",
+                    "color": "blue",
+                    "opacity": "1",
+                    "pointer-events": "auto",
+                    "cursor": "default"
+                });
+                setDefaultCheckbox();
+            });
+            $("#btnHide").click(function(){
+                $("#imagePreview").css("display", "none");
+                $("#btnPreview").css("display", "block");
+                $("#btnHide").css("display", "none");
             });
             $("#add_product").click(function(){
                 $(".form_add_product").css("display", "block");
             });
             $("input[value='Cancel']").click(function(){
                 $(".form_add_product").css("display", "none");
+                /*clear the input field and images*/
+                $("input[name='name']").val("");
+                $("textarea[name='description']").val("");
+                $("select[name='category']").val("");
+                $("input[name='price']").val("");
+                $("input[name='stocks']").val("");
+                $("#imagePreview").children("div").remove();
+                $("#uploadImage").children("p").text("No file choosen");
+                $("#btnPreview").css({
+                    "opacity": "0.5",
+                    "pointer-events": "none",
+                    "color": "gray",
+                    "display": "block"
+                });
+                $("#btnHide").css("display", "none");
+                // let images = document.querySelectorAll()
             });
             // // $("input[type='checkbox']").change(function(){
             // //     console.log("shdsjhdsk");
@@ -133,8 +182,8 @@
 
             $(".display_product").submit(function(e){
                 /*
-                    1. Show the modal to edit product but clear first the content
-                    2. Display the information fromy the database of the product to be edited
+                DONE!dsds    1. Show the modal to edit product but clear first the content
+                    2. Display the information from the database of the product to be edited
                     3. Update the product in the database
                     Note: The product information displayed in the client side should be updated.
                 */
@@ -169,7 +218,8 @@
                         });
 
                         $("#btnPreview").click(function(){
-                            displayImages(data.images);
+                            $("#imagePreview").children("div").remove();
+                            displayImages(data.images, data.main_image);
                         })
                     },
                     error: function(xhr, status, error) {
@@ -178,12 +228,11 @@
                     
                 });
                 
-                function displayImages(images){
-                    const preview = document.getElementById('imagePreview');
-                    
+                function displayImages(images, main_image){
+                    console.log($("preview"))
 
+                    const preview = document.getElementById('imagePreview');                    
                     images = JSON.parse(images);
-                    console.log(images);
                     let imagesArr = Object.keys(images);
 
                     for(let i = 0; i < imagesArr.length; i++){
@@ -211,7 +260,7 @@
                         checkbox.setAttribute("type", "checkbox");
                         checkbox.setAttribute("name", "checkbox");
                         // checkbox.setAttribute("id", `checkbox${len}`);
-                        // checkbox.setAttribute("value", len);
+                        // checkbox.setAttribute("value", len); 
                         checkbox.onchange = function() {
                             limitCheckboxSelection(this);
                         };
@@ -227,6 +276,15 @@
                         frame.append(label);
                         $("#imagePreview").append(frame);
                     };
+                    let checkboxes = document.querySelectorAll('input[name="checkbox"]');
+                    console.log(typeof parseInt(main_image));
+                    for(let i = 0; i < checkboxes.length; i++){
+                        if(i === parseInt(main_image) - 1){
+                            checkboxes[i].checked = true;
+                        }
+                    }
+                    /*if the checked as main image is removed*/
+                    setDefaultCheckbox();
                 };
             });
         });

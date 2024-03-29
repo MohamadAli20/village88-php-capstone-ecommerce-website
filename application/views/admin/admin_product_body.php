@@ -32,8 +32,7 @@
 <?php       $main_image = intval($products[$i]['main_image']);
             $jsonString = $products[$i]['images'];
             $jsonObject = json_decode($jsonString, true);
-
-            for($j = 1; $j < count($jsonObject); $j++)
+            for($j = 1; $j <= count($jsonObject); $j++)
             {   
                 if($main_image === $j){
 ?>              <img src="/<?=$jsonObject[$j]?>">
@@ -85,13 +84,15 @@
         </div> 
         <label id="uploadImage">
             <input type="file" name="images[]" multiple accept="image/*" onchange="previewImages(event)">
+            <p>No file choosen</p>
         </label>
         <footer>
             <a id="btnPreview">Preview</a>
+            <a id="btnHide">Hide</a>
             <input type="button" value="Cancel">          
             <input type="submit" value="Save">
         </footer>
     </form>
-    <script src="/assets/admin_product.js"></script>
+    <script src="/assets/admin_product.js"></script>    
 </body>
 </html>
