@@ -117,13 +117,118 @@
     </style>
     <script>
         $(document).ready(function(){
-            // $("#btnPreview").click(function(){
-            //     $('#imagePreview').css("display", "block");
-            // });
+            $("#btnPreview").click(function(){
+                $('#imagePreview').css("display", "block");
+            });
+            $("#add_product").click(function(){
+                $(".form_add_product").css("display", "block");
+            });
+            $("input[value='Cancel']").click(function(){
+                $(".form_add_product").css("display", "none");
+            });
+            // // $("input[type='checkbox']").change(function(){
+            // //     console.log("shdsjhdsk");
+            // // });
+            // console.log("sdhsds");
 
-            // $("#add_product").click(function(){
-            //     console.log("shdhsdh");
-            // });
+            $(".display_product").submit(function(e){
+                /*
+                    1. Show the modal to edit product but clear first the content
+                    2. Display the information fromy the database of the product to be edited
+                    3. Update the product in the database
+                    Note: The product information displayed in the client side should be updated.
+                */
+
+                // product id inside the form
+                let product_id = $(this)[0].querySelector("input[type='hidden']").value;
+
+                /* borrow add product form for updating product information*/
+                
+                // Prevent default form submission behavior
+                e.preventDefault();
+
+                // Send AJAX request to fetch product data
+                $.ajax({
+                    url: "<?php echo base_url('admins/get_product/');?>" + product_id,
+                    type: "GET",
+                    success: function(data) {
+                        $('input[name="name"]').val(data.name);
+                        $('textarea[name="description"]').val(data.description);
+                        $('select[name="category"]').val(data.category);
+                        $('input[name="price"]').val(data.price);
+                        $('input[name="stocks"]').val(data.stocks);
+
+                        $(".form_add_product").css("display", "block");
+                        $(".form_add_product h2").text("Edit a Product");
+                        $(".form_add_product").attr("action", "<?php echo base_url('admins/edit_product/');?>" + product_id);
+                        $("#btnPreview").css({
+                            "opacity": "1",
+                            "pointer-events": "auto",
+                            "cursor": "default",
+                            "color": "blue"
+                        });
+
+                        $("#btnPreview").click(function(){
+                            displayImages(data.images);
+                        })
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                    
+                });
+                
+                function displayImages(images){
+                    const preview = document.getElementById('imagePreview');
+                    
+
+                    images = JSON.parse(images);
+                    console.log(images);
+                    let imagesArr = Object.keys(images);
+
+                    for(let i = 0; i < imagesArr.length; i++){
+                        let image = document.createElement("img");
+                        image.style.maxWidth = '100px';
+                        image.style.maxHeight = '100px';
+                        image.setAttribute("src", "/"+images[imagesArr[i]]);
+                    
+                        let frame = document.createElement("div");
+                        frame.className = "frame";
+                        // frame.setAttribute("name", `image${len}`);
+
+                        let closeIcon = document.createElement("i");
+                        closeIcon.className ="fa-solid fa-circle-xmark";
+                        closeIcon.setAttribute("name", "closeIcon");
+                        // closeIcon.setAttribute("id", `image${len}`);
+                        closeIcon.onclick = function(){
+                            removeImage(this);
+                        }
+
+                        let label = document.createElement("label");
+                        label.className = "checkboxes";
+                        
+                        let checkbox = document.createElement("input");
+                        checkbox.setAttribute("type", "checkbox");
+                        checkbox.setAttribute("name", "checkbox");
+                        // checkbox.setAttribute("id", `checkbox${len}`);
+                        // checkbox.setAttribute("value", len);
+                        checkbox.onchange = function() {
+                            limitCheckboxSelection(this);
+                        };
+                        checkbox.className = `checkbox`;
+                        
+                        label.append(checkbox);
+                        let text = document.createElement("span");
+                        text.textContent = "Mark as main";
+                        label.append(text);
+
+                        frame.append(closeIcon);
+                        frame.append(image);
+                        frame.append(label);
+                        $("#imagePreview").append(frame);
+                    };
+                };
+            });
         });
     </script>
 </head>

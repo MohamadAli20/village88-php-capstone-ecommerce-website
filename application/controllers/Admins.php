@@ -31,8 +31,35 @@
         }
         public function show_products()
         {
-            $products = $this->Admin->selectAllProducts();
+            $products = $this->Admin->select_all_products();
             return $products;
+        }
+        public function get_product($id)
+        {
+            // $this->output->enable_profiler(TRUE);
+            $product = $this->Admin->select_product($id);
+
+            // Check if product exists
+            if ($product) {
+                // Convert product data to JSON format
+                $product_json = json_encode($product);
+
+                // Set the response content type to JSON
+                $this->output->set_content_type('application/json');
+
+                // Output the product data as JSON
+                $this->output->set_output($product_json);
+            } else {
+                // Product not found, return error response
+                $this->output->set_status_header(404);
+                $this->output->set_output(json_encode(array('error' => 'Product not found')));
+            }
+        }
+        public function edit_product($id)
+        {
+            $query = "SELECT * FROM products WHERE id = ?";
+            // var_dump($this->input->post();
+
         }
     }
 ?>

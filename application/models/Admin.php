@@ -6,12 +6,13 @@
         {
             $image_json = array();
             $num = 1;
-            for($i = 0; $i < count($_FILES['images']); $i++)
+            for($i = 0; $i < count($_FILES['images']) - 1; $i++)
             {
-                $folder_path = "/assets/images/";
+                $folder_path = "assets/images/";
                 $image_path = $folder_path . $_FILES['images']['name'][$i];
                 move_uploaded_file($_FILES['images']['tmp_name'][$i], $image_path);
                 $image_json[$num] = $image_path; /*add image*/
+                echo $image_path;
                 $num++;
             }
             $image_json = json_encode($image_json); /*convert array to json*/
@@ -29,10 +30,16 @@
             );
             $this->db->query($query, $values);
         }
-        public function selectAllProducts()
+        public function select_all_products()
         {
             $query = "SELECT * FROM products";
             $result = $this->db->query($query)->result_array();
+            return $result;
+        }
+        public function select_product($id)
+        {
+            $query = "SELECT * FROM products WHERE id = ?";
+            $result = $this->db->query($query, $id)->row_array();
             return $result;
         }
     }

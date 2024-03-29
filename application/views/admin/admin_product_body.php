@@ -26,18 +26,20 @@
             <li></li>
         </ul>
 <?php   for($i = 0; $i < count($products); $i++)
-        {   ?>
-        <form action="" method="post">
+        {  
+?>      <form class="display_product" action="/admins/get_product/<?=$products[$i]['id'];?>" method="post">
             <figure>
-<?php   
-        $jsonString = $products[$i]['images'];
-        $jsonObject = json_decode($jsonString, true);
-        // var_dump($jsonObject);
-        for($j = 1; $j < count($jsonObject); $j++)
-        {   ?>
-                <img src="<?=$jsonObject[$j]?>">
-<?php   }
-?>                <figcaption><?= $products[$i]['name']; ?></figcaption>
+<?php       $main_image = intval($products[$i]['main_image']);
+            $jsonString = $products[$i]['images'];
+            $jsonObject = json_decode($jsonString, true);
+
+            for($j = 1; $j < count($jsonObject); $j++)
+            {   
+                if($main_image === $j){
+?>              <img src="/<?=$jsonObject[$j]?>">
+<?php           }  
+            }   
+?>              <figcaption><?= $products[$i]['name']; ?></figcaption>
             </figure>
             <p><?= $products[$i]['id']; ?></p>
             <p>$<span><?= $products[$i]['price']; ?></span></p>
@@ -45,7 +47,8 @@
             <p><?= $products[$i]['stocks']; ?></p>
             <p><?= $products[$i]['price']; ?></p>
             <div>
-                <input type="submit" value="Edit">
+                <input type="hidden" value="<?= $products[$i]['id']; ?>">
+                <input class="btnEdit" type="submit" value="Edit">
             </div>
         </form>
 <?php   }   ?>
@@ -55,6 +58,7 @@
             <p class="next_arrow">></p>
         </footer>
     </div>
+    <!-- Modal to add and edit product -->
     <form class="form_add_product" action="/admins/add_product" method="post" enctype="multipart/form-data">
         <h2>Add a Product</h2>
         <label>
@@ -76,7 +80,7 @@
         <label>Stocks
             <input name="stocks" type="text" placeholder="$">
         </label>
-        <p>Upload Images (4 max):</p>
+        <p id="upload_label">Upload Images (4 max):</p>
         <div id="imagePreview">
         </div> 
         <label id="uploadImage">

@@ -1,19 +1,11 @@
-$("#btnPreview").click(function(){
-    $('#imagePreview').css("display", "block");
-});
-$("#add_product").click(function(){
-    $(".form_add_product").css("display", "block");
-});
-$("input[value='Cancel']").click(function(){
-    $(".form_add_product").css("display", "none");
-});
-
 let files;
 function previewImages(event) {
     const preview = document.getElementById('imagePreview');
     files = event.target.files;
     let len = preview.children.length + 1;
     if(files.length <= 4){
+        $("#upload_label").children("span").remove();
+
         for (let i = 0; i < files.length; i++) {
             let file = files[i];
             let reader = new FileReader();
@@ -27,7 +19,6 @@ function previewImages(event) {
                 let frame = document.createElement("div");
                 frame.className = "frame";
                 frame.setAttribute("name", `image${len}`);
-                // frame.setAttribute("id", `image${len}`);
 
                 let closeIcon = document.createElement("i");
                 closeIcon.className ="fa-solid fa-circle-xmark";
@@ -78,7 +69,12 @@ function previewImages(event) {
         }
     }
     else{
-        console.log("Maximum 4 images");
+        $("#upload_label").children("span").remove();
+        
+        $("#upload_label").append(" <span style='color: red; font-size: 15px;'>*maximum 4 images</span>")
+        let fileInput = document.querySelector("input[type='file']");
+        fileInput.value = '';
+        console.log(files);
     }
 }
 function removeFile(files, indexToRemove){
@@ -113,7 +109,8 @@ function removeImage(clickedCloseIcon){
     }
 }
 function limitCheckboxSelection(checkbox) {
-    let checkboxes = document.querySelectorAll('input[name="option"]');
+    
+    let checkboxes = document.querySelectorAll('input[name="checkbox"]');
     checkboxes.forEach(function(item) {
         if (item !== checkbox) {
             item.checked = false;
