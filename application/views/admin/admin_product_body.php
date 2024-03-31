@@ -25,7 +25,8 @@
             <li>Sold</li>
             <li></li>
         </ul>
-<?php   for($i = 0; $i < count($products); $i++)
+<?php   $start = 0;
+        for($i = $start; $i < 2; $i++)
         {  
 ?>      <form class="display_product" action="/admins/get_product/<?=$products[$i]['id'];?>" method="post">
             <figure>
@@ -44,7 +45,7 @@
             <p>$<span><?= $products[$i]['price']; ?></span></p>
             <p><?= $products[$i]['category']; ?></p>
             <p><?= $products[$i]['stocks']; ?></p>
-            <p><?= $products[$i]['price']; ?></p>
+            <p><?= $products[$i]['sold']; ?></p>
             <div>
                 <input type="hidden" value="<?= $products[$i]['id']; ?>">
                 <input class="btnEdit" type="submit" value="Edit">
@@ -53,24 +54,29 @@
 <?php   }   ?>
         <footer>
             <p class="previous_arrow"><</p>
-            <p>1</p>
-            <p class="next_arrow">></p>
+<?php       $numPage = round(count($products)/2);
+            for($page = 1; $page < $numPage; $page++)
+            {       
+?>          <p><?= $page; ?></p>
+<?php       }
+?>          <p class="next_arrow">></p>
         </footer>
     </div>
     <!-- Modal to add and edit product -->
     <form class="form_add_product" action="/admins/add_product" method="post" enctype="multipart/form-data">
         <h2>Add a Product</h2>
+        <input type='hidden'name="product_id" value=''>
         <label>
             <input name="name" type="text" placeholder="Name" >
         </label>
         <textarea name="description" placeholder="Description"></textarea>
         <label>Category
             <select name="category" id="">
-                <option value="vegetables">Vegetables</option>
-                <option value="fruits">Fruits</option>
-                <option value="pork">Pork</option>
+                <option value="Vegetables">Vegetables</option>
+                <option value="Fruits">Fruits</option>
+                <option value="Pork">Pork</option>
                 <option value="Beef">Beef</option>
-                <option value="chicken">Chicken</option>
+                <option value="Chicken">Chicken</option>
             </select>
         </label>
         <label>Price
@@ -89,7 +95,7 @@
         <footer>
             <a id="btnPreview">Preview</a>
             <a id="btnHide">Hide</a>
-            <input type="button" value="Cancel">          
+            <input id="cancel" type="button" value="Cancel">          
             <input type="submit" value="Save">
         </footer>
     </form>

@@ -23,7 +23,7 @@
         /*functions that interact with the model*/
         public function add_product()
         {
-            $this->output->enable_profiler(TRUE);
+            // $this->output->enable_profiler(TRUE);
             $data = $this->input->post();
             $this->Admin->insert_product($data);
 
@@ -39,27 +39,31 @@
             // $this->output->enable_profiler(TRUE);
             $product = $this->Admin->select_product($id);
 
-            // Check if product exists
             if ($product) {
-                // Convert product data to JSON format
+                /*onvert product data to JSON format*/
                 $product_json = json_encode($product);
 
-                // Set the response content type to JSON
+                /*set the response content type to JSON*/
                 $this->output->set_content_type('application/json');
 
-                // Output the product data as JSON
+                /*output the product data as JSON*/
                 $this->output->set_output($product_json);
             } else {
-                // Product not found, return error response
                 $this->output->set_status_header(404);
                 $this->output->set_output(json_encode(array('error' => 'Product not found')));
             }
         }
-        public function edit_product($id)
+        public function edit_product()
         {
-            $query = "SELECT * FROM products WHERE id = ?";
-            // var_dump($this->input->post();
-
+            // $this->output->enable_profiler(TRUE);
+            $updated_info = $this->input->post();
+            $this->Admin->update_product($updated_info);
         }
+        // public function receive_image_path()
+        // {
+        //     $updated_info = $_POST['updatedInfo'];
+        //     print_r($updated_info);
+        //     // return $imagePaths;
+        // }
     }
 ?>

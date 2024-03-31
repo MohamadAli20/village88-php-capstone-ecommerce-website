@@ -5,6 +5,7 @@ function previewImages(event){
     if(countImages <= 3){
         files = event.target.files;
         let len = preview.children.length + 1;
+        
         if(files.length <= 4){
             $("#upload_label").children("span").remove();
 
@@ -80,7 +81,6 @@ function previewImages(event){
     }
 }
 function removeFile(files, indexToRemove){
-    console.log(files);
     let newFiles = [];
     for(let j = 0; j < files.length; j++){
         if(j !== indexToRemove){
@@ -91,11 +91,14 @@ function removeFile(files, indexToRemove){
 }
 function removeImage(clickedCloseIcon){
     let closeIcons = document.querySelectorAll("i[name='closeIcon']");
-    console.log("goes here!");
-    console.log(closeIcons);
     for(let i = 0; i < closeIcons.length; i++){
-        if(closeIcons[i] === clickedCloseIcon){
+        /*for add a product*/
+        if(closeIcons[i] === clickedCloseIcon && files !== undefined){
             files = removeFile(files, i);
+        }
+        /*for edit a product*/
+        if(closeIcons[i] === clickedCloseIcon && files === undefined){
+            
         }
     }
     $(clickedCloseIcon).parent().remove();
@@ -111,8 +114,9 @@ function removeImage(clickedCloseIcon){
             "color": "gray",
             "display": "block"
         });
-        $("#btnHide").css("display", "none");
+        $("#imagePreview").css("display", "none");
         $("#uploadImage").children("p").text("No file choosen");
+        $("#btnHide").css("display", "none");
     }
     /*if the checked as main image is removed*/
     setDefaultCheckbox();
@@ -138,6 +142,36 @@ function setDefaultCheckbox(){
         if(!foundChecked){
             checkboxes[0].checked = true;
         }
+    }
+}
+function clearForm(){
+    $(".form_add_product").css("display", "none");
+    /*clear the input field and images*/
+    $("input[name='name']").val("");
+    $("textarea[name='description']").val("");
+    $("select[name='category']").val("");
+    $("input[name='price']").val("");
+    $("input[name='stocks']").val("");
+    $("#imagePreview").children("div").remove();
+    $("#imagePreview").css("display", "none");
+    $("#uploadImage").children("p").text("No file choosen");
+    $("#btnPreview").css({
+        "opacity": "0.5",
+        "pointer-events": "none",
+        "color": "gray",
+        "display": "block"
+    });
+    $("#btnHide").css("display", "none");
+}
+function findChecked(){
+    /*check which checkbox is checked*/
+    let checkboxes = document.querySelectorAll("input[name='checkbox']");
+    let checkboxNum = 1;
+    for(let x = 0; x < checkboxes.length; x++){
+        if(checkboxes[x].checked === true){
+            return checkboxNum;
+        }
+        checkboxNum++;
     }
 }
 

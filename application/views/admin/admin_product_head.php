@@ -21,6 +21,7 @@
         }
         .show_category form{
             padding: 20px;
+            margin-bottom: 10px;
         }
         .show_category form figure, .show_category form p, .show_category form div{
             width: 120px;
@@ -135,7 +136,6 @@
     </style>
     <script>
         $(document).ready(function(){
-            
             $("#btnPreview").click(function(){
                 $("#imagePreview").css("display", "block");
                 $("#btnPreview").css("display", "none");
@@ -155,61 +155,46 @@
             });
             $("#add_product").click(function(){
                 $(".form_add_product").css("display", "block");
+                $(".form_add_product h2").text("Add a Product");
+                $(".form_add_product").attr("action", "<?php echo base_url('admins/add_product');?>");
             });
             $("input[value='Cancel']").click(function(){
-                $(".form_add_product").css("display", "none");
-                /*clear the input field and images*/
-                $("input[name='name']").val("");
-                $("textarea[name='description']").val("");
-                $("select[name='category']").val("");
-                $("input[name='price']").val("");
-                $("input[name='stocks']").val("");
-                $("#imagePreview").children("div").remove();
-                $("#uploadImage").children("p").text("No file choosen");
-                $("#btnPreview").css({
-                    "opacity": "0.5",
-                    "pointer-events": "none",
-                    "color": "gray",
-                    "display": "block"
-                });
-                $("#btnHide").css("display", "none");
-                // let images = document.querySelectorAll()
+                clearForm();
             });
-            // // $("input[type='checkbox']").change(function(){
-            // //     console.log("shdsjhdsk");
-            // // });
-            // console.log("sdhsds");
+            // $("input[type='checkbox']").change(function(){
+            //     console.log("shdsjhdsk");
+            // });
 
             $(".display_product").submit(function(e){
                 /*
-                DONE!dsds    1. Show the modal to edit product but clear first the content
+            DONE    1. Show the modal to edit product but clear first the content
                     2. Display the information from the database of the product to be edited
                     3. Update the product in the database
                     Note: The product information displayed in the client side should be updated.
                 */
 
-                // product id inside the form
+                /*product id inside the form*/
                 let product_id = $(this)[0].querySelector("input[type='hidden']").value;
 
                 /* borrow add product form for updating product information*/
                 
-                // Prevent default form submission behavior
                 e.preventDefault();
 
-                // Send AJAX request to fetch product data
+                /*Ajax to retrieve and display product from the database*/
                 $.ajax({
                     url: "<?php echo base_url('admins/get_product/');?>" + product_id,
                     type: "GET",
-                    success: function(data) {
-                        $('input[name="name"]').val(data.name);
-                        $('textarea[name="description"]').val(data.description);
-                        $('select[name="category"]').val(data.category);
-                        $('input[name="price"]').val(data.price);
-                        $('input[name="stocks"]').val(data.stocks);
+                    success: function(data){
+                        $("input[name='product_id']").val(product_id);
+                        $("input[name='name']").val(data.name);
+                        $("textarea[name='description']").val(data.description);
+                        $("select[name='category']").val(data.category);
+                        $("input[name='price']").val(data.price);
+                        $("input[name='stocks']").val(data.stocks);
 
                         $(".form_add_product").css("display", "block");
                         $(".form_add_product h2").text("Edit a Product");
-                        $(".form_add_product").attr("action", "<?php echo base_url('admins/edit_product/');?>" + product_id);
+                        $(".form_add_product").attr("action", "<?php echo base_url('admins/edit_product');?>");
                         $("#btnPreview").css({
                             "opacity": "1",
                             "pointer-events": "auto",
@@ -217,30 +202,31 @@
                             "color": "blue"
                         });
 
-                        $("#btnPreview").click(function(){
-                            $("#imagePreview").children("div").remove();
-                            displayImages(data.images, data.main_image);
-                        })
+                        $("#imagePreview").children("div").remove();
+                        displayImages(data.images, data.main_image);
+                        
                     },
                     error: function(xhr, status, error) {
                         console.error(xhr.responseText);
                     }
-                    
                 });
+
                 
                 function displayImages(images, main_image){
-                    console.log($("preview"))
 
                     const preview = document.getElementById('imagePreview');                    
                     images = JSON.parse(images);
                     let imagesArr = Object.keys(images);
+
+                    let len = $("#imagePreview").children(".frame").length + 1;
 
                     for(let i = 0; i < imagesArr.length; i++){
                         let image = document.createElement("img");
                         image.style.maxWidth = '100px';
                         image.style.maxHeight = '100px';
                         image.setAttribute("src", "/"+images[imagesArr[i]]);
-                    
+                        image.setAttribute("name", "retrievedImage")
+
                         let frame = document.createElement("div");
                         frame.className = "frame";
                         // frame.setAttribute("name", `image${len}`);
@@ -248,7 +234,7 @@
                         let closeIcon = document.createElement("i");
                         closeIcon.className ="fa-solid fa-circle-xmark";
                         closeIcon.setAttribute("name", "closeIcon");
-                        // closeIcon.setAttribute("id", `image${len}`);
+                        closeIcon.setAttribute("id", `image${len}`);
                         closeIcon.onclick = function(){
                             removeImage(this);
                         }
@@ -259,8 +245,8 @@
                         let checkbox = document.createElement("input");
                         checkbox.setAttribute("type", "checkbox");
                         checkbox.setAttribute("name", "checkbox");
-                        // checkbox.setAttribute("id", `checkbox${len}`);
-                        // checkbox.setAttribute("value", len); 
+                        checkbox.setAttribute("id", `checkbox${len}`);
+                        checkbox.setAttribute("value", len); 
                         checkbox.onchange = function() {
                             limitCheckboxSelection(this);
                         };
@@ -275,9 +261,10 @@
                         frame.append(image);
                         frame.append(label);
                         $("#imagePreview").append(frame);
+
+                        len += 1;
                     };
                     let checkboxes = document.querySelectorAll('input[name="checkbox"]');
-                    console.log(typeof parseInt(main_image));
                     for(let i = 0; i < checkboxes.length; i++){
                         if(i === parseInt(main_image) - 1){
                             checkboxes[i].checked = true;
@@ -286,6 +273,74 @@
                     /*if the checked as main image is removed*/
                     setDefaultCheckbox();
                 };
+
+            });
+            $(".form_add_product").submit(function(e){
+                e.preventDefault();
+
+                let id = $(this).find("input[name='product_id']").val();
+                let name = $(this).find("input[name='name']").val();
+                let description = $(this).find("textarea[name='description']").val();
+                let category = $(this).find("select[name='category']").val();
+                let price = $(this).find("input[name='price']").val();
+                let stocks = $(this).find("input[name='stocks']").val();
+
+                let main_image = findChecked();
+                let details = [id, name, description, category, price, stocks, main_image]
+
+                /*get the images existing image/s displayed*/
+                let imageUrl = $(this).find("img");
+                let images = [];
+                for(let k = 0; k < imageUrl.length; k++){
+                    let imagePath = $(imageUrl[k]).attr("src");
+                    
+                    for(let l = 0; l < imagePath.length; l++){
+                        if(imagePath[l] === ","){
+                            imagePath = imagePath.slice(l + 1);
+                            break;
+                        }
+                    }
+                    images.push(imagePath);
+                }
+                $.ajax({    
+                    url: "<?php echo base_url('admins/edit_product'); ?>",
+                    type: "POST",
+                    data: { details, images},
+                    success: function(response){
+                        /*update the product information displayed*/
+                        let displayProduct = document.querySelectorAll(".display_product");                
+                        for(let y = 0; y < displayProduct.length; y++){
+                            if(y === id - 1){
+                                let product = $(displayProduct[y])[0];    
+                                product.querySelectorAll("p")[1].querySelector("span").innerText = price;
+                                product.querySelectorAll("p")[2].innerText = category;
+                                product.querySelectorAll("p")[3].innerText = stocks;
+                                /*Ajax to retrieve and display product from the database*/
+                                $.ajax({
+                                    url: "<?php echo base_url('admins/get_product/');?>" + id,
+                                    type: "GET",
+                                    success: function(data){
+                                        console.log(product);
+                                        let jsonObject = JSON.parse(data.images);
+                                        for(let key in jsonObject){
+                                            if(data.main_image == key){
+                                                product.querySelector("img").src = "/" +jsonObject[key];
+                                            }
+                                        }
+                                    },
+                                    error: function(xhr, status, error) {
+                                        console.error(error);
+                                    }
+                                });
+                            }
+                        }
+                    },
+                    error: function(xhr, status, error){
+                        console.error(error);
+                    }
+                });
+                
+                $(".form_add_product").css("display", "none");
             });
         });
     </script>

@@ -53,4 +53,4 @@ $route['default_controller'] = 'products';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 $route['index'] = 'products/index';
-$route['product_view/(:any)'] = 'products/product_view/$product_id'; 
+$route['product_view/(:any)'] = 'products/product_view/$product_id';
