@@ -12,12 +12,15 @@
             $this->load->view('partials/partial_admin_side_nav');
             $this->load->view('admin/admin_order_body');
         }
-        public function products()
+        public function products($current_page = 1)
         {
-            $products = $this->show_products();
+            $this->session->set_userdata('current_page', $current_page);
+            $products = $this->show_products($current_page);
+            $total_product = $this->get_total();
+
             $this->load->view('admin/admin_product_head');
             $this->load->view('partials/partial_admin_side_nav');
-            $this->load->view('admin/admin_product_body', array('products' => $products));
+            $this->load->view('admin/admin_product_body', array('products' => $products, 'total_product' => $total_product));
         }
 
         /*functions that interact with the model*/
@@ -25,13 +28,31 @@
         {
             // $this->output->enable_profiler(TRUE);
             $data = $this->input->post();
-            $this->Admin->insert_product($data);
+            
+            /*store image in the server and convert image path to json*/
+            $this->load->library("upload");
+            $image_json = array();
+            $num = 1;
+            foreach($_FILES['images']['name'] as $key => $filename)
+            {
+                $folder_path = "assets/images/";
+                $image_path = $folder_path . $filename;
+                move_uploaded_file($_FILES['images']['tmp_name'][$key], $image_path);
+                $image_json[$num] = $image_path; /*add image*/
+                $num++;
+            }
+            $image_json = json_encode($image_json); /*convert array to json*/
 
-            redirect('/admins/products');
+            $this->Admin->insert_product($data, $image_json);
+            // redirect('/admins/products');
         }
-        public function show_products()
+        public function get_total()
         {
-            $products = $this->Admin->select_all_products();
+            return $this->Admin->select_all();
+        }
+        public function show_products($current_page)
+        {
+            $products = $this->Admin->select_products($current_page);
             return $products;
         }
         public function get_product($id)
@@ -39,8 +60,8 @@
             // $this->output->enable_profiler(TRUE);
             $product = $this->Admin->select_product($id);
 
-            if ($product) {
-                /*onvert product data to JSON format*/
+            if($product){
+                /*convert product data to JSON format*/
                 $product_json = json_encode($product);
 
                 /*set the response content type to JSON*/
@@ -58,6 +79,7 @@
             // $this->output->enable_profiler(TRUE);
             $updated_info = $this->input->post();
             $this->Admin->update_product($updated_info);
+            
         }
         // public function receive_image_path()
         // {

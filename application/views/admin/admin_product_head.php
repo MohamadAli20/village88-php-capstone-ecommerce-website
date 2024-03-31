@@ -23,11 +23,26 @@
             padding: 20px;
             margin-bottom: 10px;
         }
+        .show_category footer{
+            
+        }
+            .show_category a{
+                font-size: 16px;
+                border: 1px solid black;
+                padding: 0 10px;
+                text-decoration: none;
+                color: black;
+            }
         .show_category form figure, .show_category form p, .show_category form div{
             width: 120px;
             vertical-align: middle;
         }
-        .form_add_product{
+        #form_modal{
+            display: none;
+            font-size: 16px;
+        }
+        .form_add_product,
+        .form_edit_product{
             border: 1px solid black;
             background-color: white;
             width: 500px;
@@ -38,24 +53,26 @@
             transform: translate(-50%, -50%);
             display: none;
         }
-            .form_add_product h1, 
-            .form_add_product label, 
-            .form_add_product textarea, 
-            .form_add_product input,
-            .form_add_product select{
+            .form_add_product h1, .form_edit_product h1,
+            .form_add_product label, .form_edit_product label,
+            .form_add_product textarea, .form_edit_product textarea,
+            .form_add_product input, .form_edit_product input,
+            .form_add_product select, .form_edit_product select{
                 display: block;
                 margin: 5px 0;
             }
-            .form_add_product label input, 
-            .form_add_product textarea{
+            .form_add_product label input, .form_edit_product label input,
+            .form_add_product textarea, .form_edit_product textarea{
                 width: 100%;
                 resize: none;
             }
-            .form_add_product textarea{
+            .form_add_product textarea,
+            .form_edit_product textarea{
                 height: 100px;
                 overflow: auto;
             }
-            .form_add_product p{
+            .form_add_product p,
+            .form_edit_product p{
                 display: block;
             }
         #imagePreview{
@@ -110,18 +127,20 @@
                     margin: 0;
                     line-height: 27px;
                 }
-        .form_add_product footer{
+        .form_add_product footer,
+        .form_edit_product footer{
             font-size: 16px;
             text-align: right;
             position: relative;
             padding: 10px 0;
         }
-            .form_add_product footer #btnPreview, 
-            .form_add_product footer #btnHide,
-            .form_add_product footer input{
+            .form_add_product footer #btnPreview, .form_edit_product footer #btnPreview,
+            .form_add_product footer #btnHide, .form_edit_product footer #btnHide,
+            .form_add_product footer input, .form_edit_product footer input{
                 display: inline-block;
             }
-            .form_add_product footer a{
+            .form_add_product footer a,
+            .form_edit_product footer a{
                 text-decoration: underline;
                 color: gray;
                 position: absolute;
@@ -130,7 +149,8 @@
                 pointer-events: none;
                 opacity: 0.5;
             }
-            .form_add_product footer #btnHide{
+            .form_add_product footer #btnHide,
+            .form_edit_product footer #btnHide{
                 display: none;
             }
     </style>
@@ -154,32 +174,20 @@
                 $("#btnHide").css("display", "none");
             });
             $("#add_product").click(function(){
-                $(".form_add_product").css("display", "block");
-                $(".form_add_product h2").text("Add a Product");
-                $(".form_add_product").attr("action", "<?php echo base_url('admins/add_product');?>");
+                clearForm();
+                $("#form_modal").css("display", "block");
+                $("#form_modal h2").text("Add a Product");
+                $("#form_modal").attr("action", "/admins/add_product");
+                $("#form_modal").attr("class", "form_add_product");
             });
             $("input[value='Cancel']").click(function(){
                 clearForm();
+                $("#form_modal").css("display", "none");
             });
-            // $("input[type='checkbox']").change(function(){
-            //     console.log("shdsjhdsk");
-            // });
-
             $(".display_product").submit(function(e){
-                /*
-            DONE    1. Show the modal to edit product but clear first the content
-                    2. Display the information from the database of the product to be edited
-                    3. Update the product in the database
-                    Note: The product information displayed in the client side should be updated.
-                */
-
-                /*product id inside the form*/
-                let product_id = $(this)[0].querySelector("input[type='hidden']").value;
-
-                /* borrow add product form for updating product information*/
-                
                 e.preventDefault();
-
+                let product_id = $(this)[0].querySelector("input[type='hidden']").value;
+                
                 /*Ajax to retrieve and display product from the database*/
                 $.ajax({
                     url: "<?php echo base_url('admins/get_product/');?>" + product_id,
@@ -192,9 +200,10 @@
                         $("input[name='price']").val(data.price);
                         $("input[name='stocks']").val(data.stocks);
 
-                        $(".form_add_product").css("display", "block");
-                        $(".form_add_product h2").text("Edit a Product");
-                        $(".form_add_product").attr("action", "<?php echo base_url('admins/edit_product');?>");
+                        $("#form_modal").css("display", "block");
+                        $("#form_modal h2").text("Edit a Product");
+                        $("#form_modal").attr("action", "<?php echo base_url('admins/edit_product');?>");
+                        $("#form_modal").attr("class", "form_edit_product");
                         $("#btnPreview").css({
                             "opacity": "1",
                             "pointer-events": "auto",
@@ -213,7 +222,6 @@
 
                 
                 function displayImages(images, main_image){
-
                     const preview = document.getElementById('imagePreview');                    
                     images = JSON.parse(images);
                     let imagesArr = Object.keys(images);
@@ -229,7 +237,6 @@
 
                         let frame = document.createElement("div");
                         frame.className = "frame";
-                        // frame.setAttribute("name", `image${len}`);
 
                         let closeIcon = document.createElement("i");
                         closeIcon.className ="fa-solid fa-circle-xmark";
@@ -275,72 +282,94 @@
                 };
 
             });
-            $(".form_add_product").submit(function(e){
+            $("#form_modal").submit(function(e){
                 e.preventDefault();
 
-                let id = $(this).find("input[name='product_id']").val();
-                let name = $(this).find("input[name='name']").val();
-                let description = $(this).find("textarea[name='description']").val();
-                let category = $(this).find("select[name='category']").val();
-                let price = $(this).find("input[name='price']").val();
-                let stocks = $(this).find("input[name='stocks']").val();
+                let className = $(this).attr("class");
+                if(className === "form_edit_product"){
+                    let id = $(this).find("input[name='product_id']").val();
+                    let name = $(this).find("input[name='name']").val();
+                    let description = $(this).find("textarea[name='description']").val();
+                    let category = $(this).find("select[name='category']").val();
+                    let price = $(this).find("input[name='price']").val();
+                    let stocks = $(this).find("input[name='stocks']").val();
 
-                let main_image = findChecked();
-                let details = [id, name, description, category, price, stocks, main_image]
+                    let main_image = findChecked();
+                    let details = [id, name, description, category, price, stocks, main_image]
 
-                /*get the images existing image/s displayed*/
-                let imageUrl = $(this).find("img");
-                let images = [];
-                for(let k = 0; k < imageUrl.length; k++){
-                    let imagePath = $(imageUrl[k]).attr("src");
-                    
-                    for(let l = 0; l < imagePath.length; l++){
-                        if(imagePath[l] === ","){
-                            imagePath = imagePath.slice(l + 1);
-                            break;
-                        }
-                    }
-                    images.push(imagePath);
-                }
-                $.ajax({    
-                    url: "<?php echo base_url('admins/edit_product'); ?>",
-                    type: "POST",
-                    data: { details, images},
-                    success: function(response){
-                        /*update the product information displayed*/
-                        let displayProduct = document.querySelectorAll(".display_product");                
-                        for(let y = 0; y < displayProduct.length; y++){
-                            if(y === id - 1){
-                                let product = $(displayProduct[y])[0];    
-                                product.querySelectorAll("p")[1].querySelector("span").innerText = price;
-                                product.querySelectorAll("p")[2].innerText = category;
-                                product.querySelectorAll("p")[3].innerText = stocks;
-                                /*Ajax to retrieve and display product from the database*/
-                                $.ajax({
-                                    url: "<?php echo base_url('admins/get_product/');?>" + id,
-                                    type: "GET",
-                                    success: function(data){
-                                        console.log(product);
-                                        let jsonObject = JSON.parse(data.images);
-                                        for(let key in jsonObject){
-                                            if(data.main_image == key){
-                                                product.querySelector("img").src = "/" +jsonObject[key];
-                                            }
-                                        }
-                                    },
-                                    error: function(xhr, status, error) {
-                                        console.error(error);
-                                    }
-                                });
+                    /*get the images existing image/s displayed*/
+                    let imageUrl = $(this).find("img");
+                    let images = [];
+                    for(let k = 0; k < imageUrl.length; k++){
+                        let imagePath = $(imageUrl[k]).attr("src");
+                        
+                        for(let l = 0; l < imagePath.length; l++){
+                            if(imagePath[l] === ","){
+                                imagePath = imagePath.slice(l + 1);
+                                break;
                             }
                         }
-                    },
-                    error: function(xhr, status, error){
-                        console.error(error);
+                        images.push(imagePath);
                     }
-                });
+                    $.ajax({    
+                        /*send the updated data in the controller
+                        update the displayed information*/
+                        url: "<?php echo base_url('admins/edit_product'); ?>",
+                        type: "POST",
+                        data: { details, images},
+                        success: function(response){
+                            /*update the product information displayed*/
+                            let displayProduct = document.querySelectorAll(".display_product");                
+                            for(let y = 0; y < displayProduct.length; y++){
+                                if(y === id - 1){
+                                    let product = $(displayProduct[y])[0];
+                                    product.querySelector("figcaption").innerText = name;
+                                    product.querySelectorAll("p")[1].querySelector("span").innerText = price;
+                                    product.querySelectorAll("p")[2].innerText = category;
+                                    product.querySelectorAll("p")[3].innerText = stocks;
+                                    /*Ajax to retrieve and display product from the database*/
+                                    $.ajax({
+                                        url: "<?php echo base_url('admins/get_product/');?>" + id,
+                                        type: "GET",
+                                        success: function(data){
+                                            let jsonObject = JSON.parse(data.images);
+                                            for(let key in jsonObject){
+                                                if(data.main_image == key){
+                                                    product.querySelector("img").src = "/" +jsonObject[key];
+                                                }
+                                            }
+                                        },
+                                        error: function(xhr, status, error) {
+                                            console.error(error);
+                                        }
+                                    });
+                                }
+                            }
+                        },
+                        error: function(xhr, status, error){
+                            console.error(error);
+                        }
+                    });
+                }
+                if(className === "form_add_product"){
+                    let formData = new FormData($("#form_modal")[0]);
+                    $.ajax({
+                        url: "<?php echo base_url('admins/add_product/');?>",
+                        type: "POST",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(response){
+                            console.log(response);
+                            location.reload();
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
+                }
                 
-                $(".form_add_product").css("display", "none");
+                $("#form_modal").css("display", "none");
             });
         });
     </script>

@@ -8,8 +8,8 @@
     </form>
     <div class="category">
         <h3>Categories</h3>
-        <p>All Products <span>2</span></p>
-        <p>Vegetables <span>2</span></p>
+        <p>All Products <span><?=$total_product['total']?></span></p>
+        <p><a href="/admins/products/vegeta">Vegetables <span>2</span></a></p>
         <p>Fruits <span>2</span></p>
         <p>Pork <span>2</span></p>
         <p>Beef <span>2</span></p>
@@ -17,7 +17,7 @@
     </div>
     <div class="show_category">
         <ul>
-            <li>All Products (<span>2</span>)</li>
+            <li>All Products (<span><?=$total_product['total']?></span>)</li>
             <li>Product ID #</li>
             <li>Price</li>
             <li>Category</li>
@@ -25,9 +25,9 @@
             <li>Sold</li>
             <li></li>
         </ul>
-<?php   $start = 0;
-        for($i = $start; $i < 2; $i++)
-        {  
+<?php   for($i = 0; $i < count($products); $i++)
+        {
+            // $current_page = $i;  
 ?>      <form class="display_product" action="/admins/get_product/<?=$products[$i]['id'];?>" method="post">
             <figure>
 <?php       $main_image = intval($products[$i]['main_image']);
@@ -51,19 +51,25 @@
                 <input class="btnEdit" type="submit" value="Edit">
             </div>
         </form>
-<?php   }   ?>
-        <footer>
-            <p class="previous_arrow"><</p>
-<?php       $numPage = round(count($products)/2);
-            for($page = 1; $page < $numPage; $page++)
-            {       
-?>          <p><?= $page; ?></p>
+<?php   }   
+        $current_page = $this->session->userdata('current_page');
+?>      <footer>
+<?php       if($current_page > 1)
+            {   
+?>          <a href="/admins/products/<?=$current_page - 1;?>" class="previous_arrow"><</a>
+<?php       }  
+            $numPage = ceil($total_product['total']/5);
+            for($page = 1; $page <= $numPage; $page++)
+            {
+?>          <a href="/admins/products/<?=$page;?>"><?=$page;?></a>
 <?php       }
-?>          <p class="next_arrow">></p>
+            if($current_page < $numPage){  
+?>          <a href="/admins/products/<?=$current_page + 1;?>" class="next_arrow">></a>
+<?php       }   ?>
         </footer>
     </div>
     <!-- Modal to add and edit product -->
-    <form class="form_add_product" action="/admins/add_product" method="post" enctype="multipart/form-data">
+    <form id="form_modal" method="post" enctype="multipart/form-data">
         <h2>Add a Product</h2>
         <input type='hidden'name="product_id" value=''>
         <label>
