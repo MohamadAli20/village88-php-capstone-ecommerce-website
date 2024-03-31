@@ -312,8 +312,10 @@
                         images.push(imagePath);
                     }
                     $.ajax({    
-                        /*send the updated data in the controller
-                        update the displayed information*/
+                        /*
+                        *send the updated data in the controller
+                        *update the displayed information
+                        */
                         url: "<?php echo base_url('admins/edit_product'); ?>",
                         type: "POST",
                         data: { details, images},

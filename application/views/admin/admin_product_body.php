@@ -9,7 +9,7 @@
     <div class="category">
         <h3>Categories</h3>
         <p>All Products <span><?=$total_product['total']?></span></p>
-        <p><a href="/admins/products/vegeta">Vegetables <span>2</span></a></p>
+        <p><a href="?category=vegetables">Vegetables <span>2</span></a></p>
         <p>Fruits <span>2</span></p>
         <p>Pork <span>2</span></p>
         <p>Beef <span>2</span></p>
@@ -56,15 +56,15 @@
 ?>      <footer>
 <?php       if($current_page > 1)
             {   
-?>          <a href="/admins/products/<?=$current_page - 1;?>" class="previous_arrow"><</a>
+?>          <a href="?page=<?=$current_page - 1;?>" class="previous_arrow"><</a>
 <?php       }  
             $numPage = ceil($total_product['total']/5);
             for($page = 1; $page <= $numPage; $page++)
             {
-?>          <a href="/admins/products/<?=$page;?>"><?=$page;?></a>
+?>          <a href="?page=<?=$page;?>"><?=$page;?></a>
 <?php       }
             if($current_page < $numPage){  
-?>          <a href="/admins/products/<?=$current_page + 1;?>" class="next_arrow">></a>
+?>          <a href="?page=<?=$current_page + 1;?>" class="next_arrow">></a>
 <?php       }   ?>
         </footer>
     </div>

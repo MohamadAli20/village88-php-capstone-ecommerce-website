@@ -12,10 +12,14 @@
             $this->load->view('partials/partial_admin_side_nav');
             $this->load->view('admin/admin_order_body');
         }
-        public function products($current_page = 1)
+        public function products()
         {
-            $this->session->set_userdata('current_page', $current_page);
-            $products = $this->show_products($current_page);
+            $page = $this->input->get('page');
+            if($page === null){
+                $page = 1;
+            }
+            $this->session->set_userdata('current_page', $page);
+            $products = $this->show_products($page);
             $total_product = $this->get_total();
 
             $this->load->view('admin/admin_product_head');
