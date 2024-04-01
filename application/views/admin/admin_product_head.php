@@ -127,20 +127,18 @@
                     margin: 0;
                     line-height: 27px;
                 }
-        .form_add_product footer,
-        .form_edit_product footer{
+        #form_modal footer{
             font-size: 16px;
             text-align: right;
             position: relative;
             padding: 10px 0;
         }
-            .form_add_product footer #btnPreview, .form_edit_product footer #btnPreview,
-            .form_add_product footer #btnHide, .form_edit_product footer #btnHide,
-            .form_add_product footer input, .form_edit_product footer input{
+            #form_modal footer #btnPreview,
+            #form_modal footer #btnHide,
+            #form_modal footer input{
                 display: inline-block;
             }
-            .form_add_product footer a,
-            .form_edit_product footer a{
+            #form_modal footer a{
                 text-decoration: underline;
                 color: gray;
                 position: absolute;
@@ -149,8 +147,7 @@
                 pointer-events: none;
                 opacity: 0.5;
             }
-            .form_add_product footer #btnHide,
-            .form_edit_product footer #btnHide{
+            #form_modal footer #btnHide{
                 display: none;
             }
     </style>
@@ -177,7 +174,7 @@
                 clearForm();
                 $("#form_modal").css("display", "block");
                 $("#form_modal h2").text("Add a Product");
-                $("#form_modal").attr("action", "/admins/add_product");
+                $("#form_modal").attr("action", "/dashboards/add_product");
                 $("#form_modal").attr("class", "form_add_product");
             });
             $("input[value='Cancel']").click(function(){
@@ -204,7 +201,7 @@
                 
                 /*ajax to retrieve and display product from the database*/
                 $.ajax({
-                    url: "<?php echo base_url('admins/get_product/');?>" + product_id,
+                    url: "<?php echo base_url('dashboards/get_product/');?>" + product_id,
                     type: "GET",
                     success: function(data){
                         $("input[name='product_id']").val(product_id);
@@ -216,7 +213,7 @@
 
                         $("#form_modal").css("display", "block");
                         $("#form_modal h2").text("Edit a Product");
-                        $("#form_modal").attr("action", "<?php echo base_url('admins/edit_product');?>");
+                        $("#form_modal").attr("action", "<?php echo base_url('dashboards/edit_product');?>");
                         $("#form_modal").attr("class", "form_edit_product");
                         $("#btnPreview").css({
                             "opacity": "1",
@@ -330,7 +327,7 @@
                         *send the updated data in the controller
                         *update the displayed information
                         */
-                        url: "<?php echo base_url('admins/edit_product'); ?>",
+                        url: "<?php echo base_url('dashboards/edit_product'); ?>",
                         type: "POST",
                         data: { details, images},
                         success: function(response){
@@ -345,7 +342,7 @@
                                     product.querySelectorAll("p")[3].innerText = stocks;
                                     /*Ajax to retrieve and display product from the database*/
                                     $.ajax({
-                                        url: "<?php echo base_url('admins/get_product/');?>" + id,
+                                        url: "<?php echo base_url('dashboards/get_product/');?>" + id,
                                         type: "GET",
                                         success: function(data){
                                             let jsonObject = JSON.parse(data.images);
@@ -370,7 +367,7 @@
                 if(className === "form_add_product"){
                     let formData = new FormData($("#form_modal")[0]);
                     $.ajax({
-                        url: "<?php echo base_url('admins/add_product/');?>",
+                        url: "<?php echo base_url('dashboards/add_product/');?>",
                         type: "POST",
                         data: formData,
                         processData: false,

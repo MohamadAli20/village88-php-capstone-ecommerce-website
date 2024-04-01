@@ -1,7 +1,97 @@
 <?php
     date_default_timezone_set('Asia/Manila');
-    class Admin extends CI_Model
+    class Dashboard extends CI_Model
     {
+
+        /*
+        * FOR ORDER
+        * Interact with the orders table in the database
+        */
+
+        /*get the total per category and search*/
+        public function get_count_order()
+        {
+            $all_query = "SELECT count(*) AS total FROM orders";
+            $total_order = $this->db->query($all_query)->row()->total;
+
+            $pending_query = "SELECT count(*) AS total FROM orders WHERE status = 'pending'";
+            $total_pending = $this->db->query($pending_query)->row()->total;
+
+            $on_process_query = "SELECT count(*) AS total FROM orders WHERE status = 'on-process'";
+            $total_on_process = $this->db->query($on_process_query)->row()->total;
+
+            $shipped_query = "SELECT count(*) AS total FROM orders WHERE status = 'shipped'";
+            $total_shipped = $this->db->query($shipped_query)->row()->total;
+
+            $delivered_query = "SELECT count(*) AS total FROM orders WHERE status = 'delivered'";
+            $total_delivered = $this->db->query($delivered_query)->row()->total;
+
+            return array(
+                'total_order' => $total_order,
+                'total_pending' => $total_pending,
+                'total_on_process' => $total_on_process,
+                'total_shipped' => $total_shipped,
+                'total_delivered' => $total_delivered
+            );
+        }
+        public function select_all_order($status, $search)
+        {
+            $query = "SELECT count(*) AS total FROM orders"; 
+            if($status === null || $status === "all")
+            {
+                $result = $this->db->query($query)->row_array();
+            }
+            else
+            {
+                $query .= " WHERE status = ?";
+                $result = $this->db->query($query, array($status))->row_array();
+            }
+            if($search !== null)
+            {
+                $where = " WHERE id LIKE ?";
+                $search .= "%";
+                $query .= $where;
+                $result = $this->db->query($query, array($search))->row_array();
+            }
+            return $result;
+        }
+        public function select_orders($current_page, $status, $search)
+        {
+            $page = ($current_page - 1) * 5;
+            $select = "SELECT * FROM orders ";
+            $limit = "LIMIT $page , 5";
+            if($status === null || $status === "all")
+            {
+                $query = $select . $limit;
+                $result = $this->db->query($query)->result_array();
+            }
+            else
+            {
+                $where = "WHERE status = ?";
+                $query = $select . $where . " " . $limit;
+                $result = $this->db->query($query, array($status))->result_array();
+            }
+            if($search !== null)
+            {
+                $where = "WHERE id LIKE ?";
+                $search .= "%";
+                $query = $select . $where . " " . $limit;
+                $result = $this->db->query($query, array($search))->result_array();
+            }
+            
+            return $result;
+        }
+        public function update_status($status, $orderId)
+        {
+            $query = "UPDATE orders SET status = ? WHERE id = ?";
+            $values = array($status, $orderId);
+            $this->db->query($query, $values);
+        }
+
+        /*
+        * FOR PRODUCT
+        * Interact with the products table in the database
+        */
         public function insert_product($product_info, $image_json)
         {
             $query = "INSERT INTO products(name, description, category, price, stocks, images, main_image, created_at) VALUES(?,?,?,?,?,?,?,?)";

@@ -17,7 +17,16 @@
     </div>
     <div class="show_category">
         <ul>
-            <li>All Products (<span><?=$total_per_category['total']?></span>)</li>
+            <li>All 
+<?php       $category = $this->session->userdata('category');
+            if($category === null || $category === "all")
+            {
+                $category = "Products";
+?>              
+<?php       }   ?> 
+                <?= ucfirst($category); ?>
+                (<span><?=$total_per_category['total']?></span>)
+            </li>
             <li>Product ID #</li>
             <li>Price</li>
             <li>Category</li>
@@ -27,7 +36,7 @@
         </ul>
 <?php   for($i = 0; $i < count($products); $i++)
         {
-?>      <form class="display_product" action="/admins/get_product/<?=$products[$i]['id'];?>" method="post">
+?>      <form class="display_product" action="/dashboards/get_product/<?=$products[$i]['id'];?>" method="post">
             <figure>
 <?php       $main_image = intval($products[$i]['main_image']);
             $jsonString = $products[$i]['images'];
