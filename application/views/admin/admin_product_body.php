@@ -1,8 +1,8 @@
 
-    <form action="" method="get">
+    <form>
         <h1>Products</h1>
         <label>
-            <input type="text" placeholder="Search order">
+            <input id="search" type="text" placeholder="Search order">
         </label>
         <input type="button" id="add_product" value="Add a Product">
     </form>
@@ -27,7 +27,6 @@
         </ul>
 <?php   for($i = 0; $i < count($products); $i++)
         {
-            // $current_page = $i;  
 ?>      <form class="display_product" action="/admins/get_product/<?=$products[$i]['id'];?>" method="post">
             <figure>
 <?php       $main_image = intval($products[$i]['main_image']);
@@ -48,7 +47,7 @@
             <p><?= $products[$i]['sold']; ?></p>
             <div>
                 <input type="hidden" value="<?= $products[$i]['id']; ?>">
-                <input class="btnEdit" type="submit" value="Edit">
+                <input type="submit" value="Edit">
             </div>
         </form>
 <?php   }   

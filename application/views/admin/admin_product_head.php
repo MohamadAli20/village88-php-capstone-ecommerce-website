@@ -184,11 +184,25 @@
                 clearForm();
                 $("#form_modal").css("display", "none");
             });
+            let timer;
+            $("#search").on('keyup', function(){
+                clearTimeout(timer);
+                /*wait 1 second before appending the param*/
+                timer = setTimeout(function(){
+                    let name = $("#search").val();
+                    let url = new URL(window.location.href);
+
+                    url.search = '';
+                    /*update search param*/
+                    url.searchParams.set('search', name);
+                    window.location.href = url.toString();
+                }, 1000);
+            });
             $(".display_product").submit(function(e){
                 e.preventDefault();
                 let product_id = $(this)[0].querySelector("input[type='hidden']").value;
                 
-                /*Ajax to retrieve and display product from the database*/
+                /*ajax to retrieve and display product from the database*/
                 $.ajax({
                     url: "<?php echo base_url('admins/get_product/');?>" + product_id,
                     type: "GET",

@@ -17,7 +17,7 @@
             );
             $this->db->query($query, $values);
         }
-        public function select_all($category)
+        public function select_all($category, $search)
         {
             $query = "SELECT count(*) AS total FROM products"; 
             if($category === null || $category === "all")
@@ -28,6 +28,13 @@
             {
                 $query .= " WHERE category = ?";
                 $result = $this->db->query($query, array($category))->row_array();
+            }
+            if($search !== null)
+            {
+                $where = " WHERE name LIKE ?";
+                $search .= "%";
+                $query .= $where;
+                $result = $this->db->query($query, array($search))->row_array();
             }
             return $result;
         }
@@ -61,7 +68,7 @@
             );
         }
 
-        public function select_products($current_page, $category)
+        public function select_products($current_page, $category, $search)
         {
             $page = ($current_page - 1) * 5;
             $select = "SELECT * FROM products ";
@@ -77,6 +84,13 @@
                 $query = $select . $where . " " . $limit;
                 $result = $this->db->query($query, array($category))->result_array();
             }
+            if($search !== null)
+            {
+                $where = "WHERE name LIKE ?";
+                $search .= "%";
+                $query = $select . $where . " " . $limit;
+                $result = $this->db->query($query, array($search))->result_array();
+            }
             
             return $result;
         }
@@ -86,13 +100,19 @@
             $result = $this->db->query($query, $id)->row_array();
             return $result;
         }
+        public function select_product_by_name($name)
+        {
+            $query = "SELECT * FROM products WHERE name LIKE ?";
+            $like = $name . "%";
+            $result = $this->db->query($query, array($like))->result_array();
+            return $result;
+        }
         public function update_product($updated_info)
         {
             $this->load->library('upload');
 
             $imagesPath = array();
             $product = $updated_info['details'];
-            print_r($product);
             $images = $updated_info['images'];
             for($i = 0; $i < count($images); $i++)
             {
