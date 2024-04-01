@@ -15,16 +15,29 @@
         public function products()
         {
             $page = $this->input->get('page');
-            if($page === null){
+            if($page === null)
+            {
                 $page = 1;
             }
+            $category = $this->input->get('category');
+            if($category !== null)
+            {
+                $this->session->set_userdata('category', $category);
+            }
+
             $this->session->set_userdata('current_page', $page);
-            $products = $this->show_products($page);
-            $total_product = $this->get_total();
+            $products = $this->show_products($page, $category);
+            $total_per_category = $this->get_total($category);
+            $count = $this->get_all_total();
+            $product_data = array(
+                'products' => $products,
+                'total_per_category' => $total_per_category,
+                'count' => $count
+            );
 
             $this->load->view('admin/admin_product_head');
             $this->load->view('partials/partial_admin_side_nav');
-            $this->load->view('admin/admin_product_body', array('products' => $products, 'total_product' => $total_product));
+            $this->load->view('admin/admin_product_body', $product_data);
         }
 
         /*functions that interact with the model*/
@@ -50,13 +63,17 @@
             $this->Admin->insert_product($data, $image_json);
             // redirect('/admins/products');
         }
-        public function get_total()
+        public function get_total($category)
         {
-            return $this->Admin->select_all();
+            return $this->Admin->select_all($category);
         }
-        public function show_products($current_page)
+        public function get_all_total()
         {
-            $products = $this->Admin->select_products($current_page);
+            return $this->Admin->get_count();
+        }
+        public function show_products($current_page, $category)
+        {
+            $products = $this->Admin->select_products($current_page, $category);
             return $products;
         }
         public function get_product($id)
@@ -85,11 +102,9 @@
             $this->Admin->update_product($updated_info);
             
         }
-        // public function receive_image_path()
+        // public function get_product_by_category()
         // {
-        //     $updated_info = $_POST['updatedInfo'];
-        //     print_r($updated_info);
-        //     // return $imagePaths;
+            
         // }
     }
 ?>

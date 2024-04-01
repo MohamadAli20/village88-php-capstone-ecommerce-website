@@ -17,20 +17,67 @@
             );
             $this->db->query($query, $values);
         }
-        public function select_all($category = null)
+        public function select_all($category)
         {
-            $query = "SELECT count(*) AS total FROM products";
-            // if($category !== null)
-            // {
-            //     $query .= " WHERE category = ?";
-            // }
-            return $this->db->query($query)->row_array();
+            $query = "SELECT count(*) AS total FROM products"; 
+            if($category === null || $category === "all")
+            {
+                $result = $this->db->query($query)->row_array();
+            }
+            else
+            {
+                $query .= " WHERE category = ?";
+                $result = $this->db->query($query, array($category))->row_array();
+            }
+            return $result;
         }
-        public function select_products($current_page)
+        public function get_count()
+        {
+            $all_query = "SELECT count(*) AS total FROM products";
+            $total_product = $this->db->query($all_query)->row()->total;
+
+            $vegetables_query = "SELECT count(*) AS total FROM products WHERE category = 'vegetables'";
+            $total_vegetables = $this->db->query($vegetables_query)->row()->total;
+
+            $fruits_query = "SELECT count(*) AS total FROM products WHERE category = 'fruits'";
+            $total_fruits = $this->db->query($fruits_query)->row()->total;
+
+            $pork_query = "SELECT count(*) AS total FROM products WHERE category = 'pork'";
+            $total_pork = $this->db->query($pork_query)->row()->total;
+
+            $beef_query = "SELECT count(*) AS total FROM products WHERE category = 'beef'";
+            $total_beef = $this->db->query($beef_query)->row()->total;
+
+            $chicken_query = "SELECT count(*) AS total FROM products WHERE category = 'chicken'";
+            $total_chicken = $this->db->query($chicken_query)->row()->total;
+
+            return array(
+                'all_total' => $total_product,
+                'vegetables_total' => $total_vegetables,
+                'fruits_total' => $total_fruits,
+                'pork_total' => $total_pork,
+                'beef_total' => $total_beef,
+                'chicken_total' => $total_chicken
+            );
+        }
+
+        public function select_products($current_page, $category)
         {
             $page = ($current_page - 1) * 5;
-            $query = "SELECT * FROM products LIMIT $page , 5";
-            $result = $this->db->query($query)->result_array();
+            $select = "SELECT * FROM products ";
+            $limit = "LIMIT $page , 5";
+            if($category === null || $category === "all")
+            {
+                $query = $select . $limit;
+                $result = $this->db->query($query)->result_array();
+            }
+            else
+            {
+                $where = "WHERE category = ?";
+                $query = $select . $where . " " . $limit;
+                $result = $this->db->query($query, array($category))->result_array();
+            }
+            
             return $result;
         }
         public function select_product($id)

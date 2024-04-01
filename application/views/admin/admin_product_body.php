@@ -8,16 +8,16 @@
     </form>
     <div class="category">
         <h3>Categories</h3>
-        <p>All Products <span><?=$total_product['total']?></span></p>
-        <p><a href="?category=vegetables">Vegetables <span>2</span></a></p>
-        <p>Fruits <span>2</span></p>
-        <p>Pork <span>2</span></p>
-        <p>Beef <span>2</span></p>
-        <p>Chicken <span>2</span></p>
+        <p><a href="?category=all">All Products <span><?=$count['all_total']?></a></span></p>
+        <p><a href="?category=vegetables">Vegetables <span><?=$count['vegetables_total']?></span></a></p>
+        <p><a href="?category=fruits">Fruits <span><?=$count['fruits_total']?></span></a></p>
+        <p><a href="?category=pork">Pork <span><?=$count['pork_total']?></span></a></p>
+        <p><a href="?category=beef">Beef <span><?=$count['beef_total']?></span></a></p>
+        <p><a href="?category=chicken">Chicken <span><?=$count['chicken_total']?></span></a></p>
     </div>
     <div class="show_category">
         <ul>
-            <li>All Products (<span><?=$total_product['total']?></span>)</li>
+            <li>All Products (<span><?=$total_per_category['total']?></span>)</li>
             <li>Product ID #</li>
             <li>Price</li>
             <li>Category</li>
@@ -58,7 +58,7 @@
             {   
 ?>          <a href="?page=<?=$current_page - 1;?>" class="previous_arrow"><</a>
 <?php       }  
-            $numPage = ceil($total_product['total']/5);
+            $numPage = ceil($total_per_category['total']/5);
             for($page = 1; $page <= $numPage; $page++)
             {
 ?>          <a href="?page=<?=$page;?>"><?=$page;?></a>
