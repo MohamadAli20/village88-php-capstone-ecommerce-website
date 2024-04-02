@@ -35,14 +35,22 @@
                 </div>
                 <div class="products">
                     <h3>All Products (36)</h3>
-<?php               for($i = 1; $i <= 15; $i++)
+<?php               for($i = 0; $i < count($products); $i++)
                     {   ?>
-                    <a href="/product_view/<?=$i?>">
+                    <a href="/product_view/<?=$products[$i]['id']?>">
                         <figure>
-                            <img src="/assets/product1.jpg" alt="A bowl of vegetable salad">
+<?php                       $images = json_decode($products[$i]['images']);
+                            foreach($images as $key => $image)
+                            {   
+                                if($key === $products[$i]['main_image'])
+                                {
+?>                              <img src="<?=$image;?>" alt="<?=$image;?>">
+<?php                           }
+                            }    
+?>
                             <figcaption>
                                 <p class="description">
-                                    <span>Vegetables</span>
+                                    <span><?=$products[$i]['name']?></span>
                                     <i class="fa-solid fa-star rated"></i>
                                     <i class="fa-solid fa-star rated"></i>
                                     <i class="fa-solid fa-star rated"></i>
@@ -50,7 +58,7 @@
                                     <i class="fa-solid fa-star unrated"></i>
                                     36 Rating
                                 </p>
-                                <p class="price">$ 10</p>
+                                <p class="price">$ <?=$products[$i]['price']?></p>
                             </figcaption>
                         </figure>
                     </a>

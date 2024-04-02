@@ -3,14 +3,31 @@
 
 class Products extends CI_Controller
 {
-	/*functions that render view files for client side*/
+	public function __construct()
+	{
+		parent::__construct();
+		$this->load->model('Product');
+	}
+	/*
+	* Render Catalog Page
+	*/
 	public function index()
 	{
 		$this->load->view('catalog_head');
 		$this->load->view('partials/partial_side');
 		$this->load->view('partials/partial_nav');
-		$this->load->view('catalog_body');
+
+		$products = $this->get_products();
+		$this->load->view('catalog_body', array('products' => $products));
 	}
+	/*
+	* Interact with the model for catalog page
+	*/
+	public function get_products()
+	{
+		return $this->Product->get_all_products();
+	}
+
 	public function product_view($product_id)
 	{
 		$this->load->view('product_view_head');
@@ -25,10 +42,15 @@ class Products extends CI_Controller
 		$this->load->view('partials/partial_success_nav');
 		$this->load->view('cart_body');
 	}
+	
+
+	/*
+	* SIGN UP & LOGIN
+	* render view files
+	*/
 	public function signup()
 	{
 		$this->load->view('signup');
-		
 	}
 	public function login()
 	{
@@ -42,7 +64,12 @@ class Products extends CI_Controller
 		$this->load->view('catalog_body');
 	}
 
-	/*functions that interact with the model*/
+	/*
+	* SIGN UP & LOGIN
+	* interact with the model
+	* form validation
+	* password encryption (hashing and salting)
+	*/
 	public function register()
 	{
 		$this->load->library('form_validation');
