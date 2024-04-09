@@ -8,9 +8,9 @@
         </nav>
         <main>
             <header>
-                <form action="/products/search" method="post">
+                <form id="form_search">
                     <label>
-                        <input type="text" name="search" placeholder="Search Products">
+                        <input id="search" type="text" name="search" placeholder="Search Products">
                     </label>
                     <button type="submit" id="btn-search">
                         <i class="fa-solid fa-magnifying-glass"></i>

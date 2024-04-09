@@ -4,7 +4,6 @@
         public function __construct(){
             parent::__construct();
             $this->load->model('Dashboard');
-            
         }
         
         /* 
@@ -35,9 +34,9 @@
             $search = $this->session->userdata('search');
 
             $this->session->set_userdata('current_page', $page);
-            $orders = $this->show_orders($page, $status, $search);
-            $total_per_status = $this->get_total_order($status, $search);
-            $count = $this->get_all_total_order();
+            $orders = $this->show_orders($page, $status, $search); /*display the orders*/
+            $total_per_status = $this->get_total_order($status, $search); /*retrieve orders by status or search*/
+            $count = $this->get_all_total_order(); /*retrieve count per status for pagination*/
             $order_data = array(
                 'orders' => $orders,
                 'total_per_status' => $total_per_status,
@@ -48,23 +47,22 @@
             $this->load->view('partials/partial_admin_side_nav');
             $this->load->view('admin/admin_order_body', $order_data);
         }
-        public function get_all_total_order()
+        /*display product*/
+        public function show_orders($current_page, $status, $search)
         {
-            $result = $this->Dashboard->get_count_order();
-
-            // header('Content-Type: application/json');
-            return $result;
-            
+            return $this->Dashboard->select_orders($current_page, $status, $search);
         }
+        /*get total based on status or search*/
         public function get_total_order($status, $search)
         {
             return $this->Dashboard->select_all_order($status, $search);
         }
-        public function show_orders($current_page, $status, $search)
+        /*get all total of each status*/
+        public function get_all_total_order()
         {
-            $status = $this->Dashboard->select_orders($current_page, $status, $search);
-            return $status;
+            return $this->Dashboard->get_count_order();
         }
+        
         public function update_order()
         {
             $status = $this->input->post('status');

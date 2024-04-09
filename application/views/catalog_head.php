@@ -24,6 +24,9 @@
                 width: 100px;
                 margin-right: 50px;
             }
+                .categories a{
+                    text-decoration: none;
+                }
                 .categories figure{
                     width: 100px;
                     height: 100px;
@@ -191,7 +194,11 @@
                         color: rgba(176, 176, 176, 1);
                         font-size: 14px;
                     }
-                    #logout_modal{
+                    .products a{
+                        text-decoration: none;
+                        color: black;
+                    }
+        #logout_modal{
             position: absolute;
             top: 70px;
             right: 10px;
@@ -234,6 +241,12 @@
                     logout_modal.style.display = 'none';
                 }
             });
+            $("#form_search").on('keypress', function(e){
+                // if (event.keyCode === 13) {
+                //     alert("Hello");
+                // }
+            })
+            // $("")
         });
     </script>
 </head>

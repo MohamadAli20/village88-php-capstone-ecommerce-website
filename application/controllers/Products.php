@@ -13,28 +13,98 @@ class Products extends CI_Controller
 	*/
 	public function index()
 	{
+		$page = $this->input->get('page');
+		if($page === null)
+		{
+			$page = 1;
+		}
+		$get_category = $this->input->get('category');
+		if($get_category !== null)
+		{
+			$this->session->set_userdata('category', $get_category);
+			$this->session->unset_userdata('search_product');
+		}
+		$get_search = $this->input->get('search');
+		if($get_search !== null)
+		{
+			$this->session->set_userdata('search_product', $get_search);
+			$this->session->unset_userdata('category');
+		}		
+		/*set the session*/
+		$category = $this->session->userdata('category');
+		$search = $this->session->userdata('search_product');
+
+		$this->session->set_userdata('current_page', $page);
+		$products = $this->show_products($page, $category, $search);
+		$total_per_category = $this->get_total_product($category);
+		$count = $this->get_all_total_product();
+		$product_data = array(
+			'products' => $products,
+			'total_per_category' => $total_per_category,
+			'count' => $count
+		);
 		$this->load->view('catalog_head');
 		$this->load->view('partials/partial_side');
+		/*if login or not*/
+		if($this->session->userdata('name') === null) /*not logged in*/
+		{
 		$this->load->view('partials/partial_nav');
-
-		$products = $this->get_products();
-		$this->load->view('catalog_body', array('products' => $products));
+		}
+		else
+		{
+		$this->load->view('partials/partial_success_nav');
+		}
+		$this->load->view('catalog_body', $product_data);
 	}
 	/*
-	* Interact with the model for catalog page
+	* Interact with the model for Catalog Page
 	*/
-	public function get_products()
+	/*display products based on category or search*/
+	public function show_products($current_page, $category, $search)
 	{
-		return $this->Product->get_all_products();
+		return $this->Product->select_products($current_page, $category, $search);
+	}
+	/*retrieve total per category based on category or search*/
+	public function get_total_product($category)
+	{
+		return $this->Product->select_all_product($category);
+	}
+	/*retrieve the total per category*/
+	public function get_all_total_product()
+	{
+		return $this->Product->get_count_product();
 	}
 
-	public function product_view($product_id)
+
+	/*
+	* Render Product View Page
+	* Display specific product
+	*/
+	public function product_view($id)
 	{
+		$product = $this->get_product_by_id($id);
+		/*set category in the session for similar items*/
+		$similar_products = $this->get_similar_items($product['category']);
 		$this->load->view('product_view_head');
 		$this->load->view('partials/partial_side');
 		$this->load->view('partials/partial_success_nav');
-		$this->load->view('product_view_body');
+		$this->load->view('product_view_body', array('product' => $product, 'similar_items' => $similar_products));
 	}
+	/*
+	* Retrieve product by product id
+	*/
+	public function get_product_by_id($id)
+	{
+		return $this->Product->select_product_by_id($id);
+	}
+	/* 
+	* Retrieve similar products by category
+	*/
+	public function get_similar_items($category)
+	{
+		return $this->Product->select_similar_products($category);
+	}
+
 	public function cart()
 	{
 		$this->load->view('cart_head');
@@ -136,8 +206,8 @@ class Products extends CI_Controller
 				$name = array(
 					'first_name' => $result['first_name'], 
 					'last_name' => $result['last_name']);
-				$this->session->set_userdata("name", $name);
-				redirect("/products/success_login");
+				$this->session->set_userdata("name", $name); /*set the username in the session*/
+				redirect("/");
 			}
 			if($result === false)
 			{

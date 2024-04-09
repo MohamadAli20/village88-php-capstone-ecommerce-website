@@ -7,8 +7,33 @@
         * FOR ORDER
         * Interact with the orders table in the database
         */
-
-        /*get the total per category and search*/
+        public function select_orders($current_page, $status, $search)
+        {
+            $page = ($current_page - 1) * 5;
+            $select = "SELECT * FROM orders ";
+            $limit = "LIMIT $page , 5";
+            if($status === null || $status === "all")
+            {
+                $query = $select . $limit;
+                $result = $this->db->query($query)->result_array();
+            }
+            else
+            {
+                $where = "WHERE status = ?";
+                $query = $select . $where . " " . $limit;
+                $result = $this->db->query($query, array($status))->result_array();
+            }
+            if($search !== null)
+            {
+                $where = "WHERE id LIKE ?";
+                $search .= "%";
+                $query = $select . $where . " " . $limit;
+                $result = $this->db->query($query, array($search))->result_array();
+            }
+            
+            return $result;
+        }
+        /*get the total per category*/
         public function get_count_order()
         {
             $all_query = "SELECT count(*) AS total FROM orders";
@@ -55,32 +80,7 @@
             }
             return $result;
         }
-        public function select_orders($current_page, $status, $search)
-        {
-            $page = ($current_page - 1) * 5;
-            $select = "SELECT * FROM orders ";
-            $limit = "LIMIT $page , 5";
-            if($status === null || $status === "all")
-            {
-                $query = $select . $limit;
-                $result = $this->db->query($query)->result_array();
-            }
-            else
-            {
-                $where = "WHERE status = ?";
-                $query = $select . $where . " " . $limit;
-                $result = $this->db->query($query, array($status))->result_array();
-            }
-            if($search !== null)
-            {
-                $where = "WHERE id LIKE ?";
-                $search .= "%";
-                $query = $select . $where . " " . $limit;
-                $result = $this->db->query($query, array($search))->result_array();
-            }
-            
-            return $result;
-        }
+        
         public function update_status($status, $orderId)
         {
             $query = "UPDATE orders SET status = ? WHERE id = ?";

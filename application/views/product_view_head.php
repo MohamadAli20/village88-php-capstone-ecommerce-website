@@ -20,28 +20,48 @@
             main i{
                 color: rgba(156, 137, 255, 1);
             }
-            main div h3{
+            main div h3, a{
                 padding-top: 3px;
                 color: rgba(161, 161, 161, 1);
+            }
+            a{
+                text-decoration: none;
+                font-weight: bold;
             }
         main #product_view_form{
             background-color: rgba(255, 255, 255, 1);
             border-radius: 20px;
             width: 1000px;
-            height: 400px;
             padding-bottom: 20px;
         }
             #product_view_form figure{
                 padding: 0;
                 margin: 0;
+                height: 250px;
             }
+                #product_view_form #main_image,
+                #product_view_form figcaption{
+                    display: inline-block;
+                }
+                #product_view_form #main_image{
+                    width: 300px;
+                    height: 100%;
+                    border-radius: 20px;
+                    overflow: hidden;
+                    box-shadow: 0px 3.17949px 11.9231px rgba(201, 201, 201, 0.2);
+                }
+                #product_view_form #main_image img{
+                    width: 100%;
+                    height: 100%;
+                }
                 #product_view_form figcaption{
                     width: 60%;
                     margin: 40px;
                     color: rgba(125, 125, 125, 1);
                     line-height: 25px;
                     border-bottom: 1px solid rgba(241, 241, 241, 1);
-                    padding-bottom: 0;
+                    margin-top: 0;
+                    height: 100%;
                 }
                 #product_view_form figcaption span{
                     display: block;
@@ -61,6 +81,10 @@
                     font-size: 11px;
                     color: rgba(255, 201, 63, 1);
                 }
+                #product_view_form figcaption p{
+                    display: inline-block;
+                    vertical-align: top;
+                }
                 #rating{
                     color: rgba(125, 125, 125, 1);
                     font-size: 12px;
@@ -70,26 +94,44 @@
                     color: rgba(121, 113, 217, 1);
                     background-color: rgba(241, 241, 241, 1);
                     border-radius: 33.43px;
-                    width: 30px;
+                    width: 50px;
                     text-align: center;
+                    padding-top: 0;
                     padding: 5px 10px;
-                    margin: 20px 0;
+                    margin: 20px;
+                }
+                #product_view_form figcaption #description{
+                    display: block;
+                    overflow: auto;
+                    height: 150px;
+                    position: relative;
+                    bottom: 0;
+                }
+                #product_view_form footer .other_image{
+                    overflow: hidden;
+                    width: 100px;
+                    height: 100px;
+                    border-radius: 10px;
+                    box-shadow: 0px 3.17949px 11.9231px rgba(201, 201, 201, 0.2);
                 }
                 #product_view_form footer figure img{
-                    width: 80px;
-                    height: 80px;
+                    width: 100px;
+                    height: 100px;
+
                 }
             footer{
-                padding: 0 20px;
+                padding: 20px;
+                position: relative;
             }
                 footer figure, footer form{
                     display: inline-block;
                     vertical-align: top;
-                    height: 80px;
                 }
                 footer form{
-                    width: 60%;
+                    text-align: center;
                     padding: 0 20px;
+                    position: absolute;
+                    right: 0;
                 }
                     footer label, footer p, footer button{
                         display: inline-block;
@@ -97,7 +139,7 @@
                         margin: 0;
                         padding: 0;
                     }
-                        footer label select, footer p span{
+                        footer label input[type="number"], footer p span{
                             display: block;
                         }
                         footer label, footer p{
@@ -105,13 +147,13 @@
                             padding: 0 20px 0 10px;
                             color: rgba(125, 125, 125, 1);
                         }
-                            footer label select, footer p span, footer button{
+                            footer label input[type="number"], footer p span, footer button{
                                 width: 100px;
                                 height: 50px;
                                 border-radius: 10px;
                                 text-align: center;
                             }
-                            footer label select{
+                            footer label input[type="number"]{
                                 border: 1px solid rgba(212, 225, 236, 1);
                             }
                             footer p span{
@@ -263,7 +305,7 @@
     <script>
          $(document).ready(function() {
             var modal = document.getElementById('modal_background');
-            $('#add_to_cart').click(function(event)
+            $('#add_to_cart').submit(function(event)
             {
                 modal.style.display = 'block';
                 event.preventDefault();
@@ -284,6 +326,14 @@
                     logout_modal.style.display = 'none';
                 }
             });
+            $("#add_to_cart input[type='number']").on('input', function(e){
+                let quantity = e.target.value;
+                let price = parseInt($("#add_to_cart input[type='hidden']").val());
+                let total = price * quantity;
+                $("#total_amount").text("$ " + total);
+            });
+
+
         });
     </script>
 </head>
