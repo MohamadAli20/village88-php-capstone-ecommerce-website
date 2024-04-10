@@ -332,8 +332,36 @@
                 let total = price * quantity;
                 $("#total_amount").text("$ " + total);
             });
+            /*handle search*/
+            function handleSearch(){
+            let name = $("#form_success_nav").find("input[name='search']").val();
+            let url = "<?php echo base_url('/product_view/')?>" + encodeURIComponent(name);
 
+            // Replace the current URL in the address bar
+            history.replaceState(null, '', url);
 
+            // Perform AJAX request
+            $.ajax({
+                url: url,
+                type: "GET",
+                success: function(data){
+                    // console.log(data);
+                    location.reload();
+                }, 
+                error: function(xhr, status, error){
+                    console.error(error);
+                }
+            });
+        }
+
+            $("#form_success_nav").submit(function(e){
+                e.preventDefault();
+                handleSearch();
+            });
+            $("#btn-search").click(function(e){
+                e.preventDefault();
+                handleSearch();
+            });
         });
     </script>
 </head>

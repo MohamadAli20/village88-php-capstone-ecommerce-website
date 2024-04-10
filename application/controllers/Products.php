@@ -80,9 +80,17 @@ class Products extends CI_Controller
 	* Render Product View Page
 	* Display specific product
 	*/
-	public function product_view($id)
+	public function product_view($value)
 	{
-		$product = $this->get_product_by_id($id);
+		$parsed_value = intval($value);
+		if($parsed_value > 0)
+		{
+			$product = $this->get_product_by_id($value);
+		}
+		else
+		{
+			$product = $this->get_product_by_id($value);
+		}
 		/*set category in the session for similar items*/
 		$similar_products = $this->get_similar_items($product['category']);
 		$this->load->view('product_view_head');
@@ -96,6 +104,10 @@ class Products extends CI_Controller
 	public function get_product_by_id($id)
 	{
 		return $this->Product->select_product_by_id($id);
+	}
+	public function get_product_by_name($name)
+	{
+		return $this->Product->select_product_by_name($name);
 	}
 	/* 
 	* Retrieve similar products by category

@@ -141,13 +141,33 @@
         /*
         * FOR PRODUCT VIEW
         */
-        public function select_product_by_id($id)
+        public function select_product_by_id($value)
         {
+            
             $query = "SELECT products.*, AVG(ratings.rating) AS average_rating, COUNT(ratings.rating) AS num_rating FROM products
-                        LEFT JOIN ratings ON products.id = ratings.product_id
-                        WHERE products.id = ?";
-            return $this->db->query($query, array($id))->row_array();
+                    LEFT JOIN ratings ON products.id = ratings.product_id";
+                        
+            if($value > 0)/*true*/
+            { 
+                $where = "WHERE products.id = ?";
+                $query .= " " . $where;
+                $result = $this->db->query($query, array($value))->row_array();
+            }
+            else /*string is false*/
+            {
+                $where = "WHERE products.name LIKE ?";
+                $query .= " " . $where;
+                $result = $this->db->query($query, array($value . "%"))->row_array();
+            }
+            return $result;
         }
+        // public function select_product_by_name($name)
+        // {
+        //     $query = "SELECT products.*, AVG(ratings.rating) AS average_rating, COUNT(ratings.rating) AS num_rating FROM products
+        //                 LEFT JOIN ratings ON products.id = ratings.product_id
+        //                 WHERE products.name = ?";
+        //     return $this->db->query($query, array($name."%"))->row_array();
+        // }
         public function select_similar_products($category)
         {
             $query = "SELECT products.*, AVG(ratings.rating) AS average_rating, COUNT(ratings.rating) AS num_rating 

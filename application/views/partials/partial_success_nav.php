@@ -11,7 +11,7 @@
         </nav>  
         <main>
             <header>
-                <form action="/products/search" method="post">
+                <form id="form_success_nav">
                     <label>
                         <input type="text" name="search" placeholder="Search Products">
                     </label>

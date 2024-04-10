@@ -241,12 +241,6 @@
                     logout_modal.style.display = 'none';
                 }
             });
-            $("#form_search").on('keypress', function(e){
-                // if (event.keyCode === 13) {
-                //     alert("Hello");
-                // }
-            })
-            // $("")
         });
     </script>
 </head>
