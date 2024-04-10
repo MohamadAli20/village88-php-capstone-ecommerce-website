@@ -103,7 +103,7 @@
     </div>
     <div id="logout_modal">
        <p>Logout</p>
-       <a href="/"><i class="fa-solid fa-right-from-bracket"></i></a>
+       <a href="/products/login"><i class="fa-solid fa-right-from-bracket"></i></a>
     </div>
 </body>
 </html>

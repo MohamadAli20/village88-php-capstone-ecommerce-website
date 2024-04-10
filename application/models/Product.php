@@ -122,6 +122,7 @@
                 if($password === $isEmailExist['encrypted_password'])
                 {
                     $user_name = array(
+                        "id" => $isEmailExist['id'],
                         "first_name" => $isEmailExist['first_name'],
                         "last_name" => $isEmailExist['last_name']
                     );
@@ -141,7 +142,7 @@
         /*
         * FOR PRODUCT VIEW
         */
-        public function select_product_by_id($value)
+        public function select_product_by_value($value)
         {
             
             $query = "SELECT products.*, AVG(ratings.rating) AS average_rating, COUNT(ratings.rating) AS num_rating FROM products
@@ -161,13 +162,6 @@
             }
             return $result;
         }
-        // public function select_product_by_name($name)
-        // {
-        //     $query = "SELECT products.*, AVG(ratings.rating) AS average_rating, COUNT(ratings.rating) AS num_rating FROM products
-        //                 LEFT JOIN ratings ON products.id = ratings.product_id
-        //                 WHERE products.name = ?";
-        //     return $this->db->query($query, array($name."%"))->row_array();
-        // }
         public function select_similar_products($category)
         {
             $query = "SELECT products.*, AVG(ratings.rating) AS average_rating, COUNT(ratings.rating) AS num_rating 
@@ -178,6 +172,16 @@
                     ORDER BY average_rating DESC
                     LIMIT 5";
             return $this->db->query($query, array($category))->result_array();
+        }
+        public function insert_to_cart($cart_info)
+        {
+            $query = "INSERT INTO carts(user_id, product_id, quantity, total_amount, created_at) VALUES(?,?,?,?,?)";
+            $this->db->query($query, $cart_info);
+        }
+        public function select_count_cart()
+        {
+            $query = "SELECT COUNT(*) AS total FROM carts";
+            return $this->db->query($query)->row_array();
         }
     }
 ?>

@@ -305,18 +305,32 @@
     <script>
          $(document).ready(function() {
             var modal = document.getElementById('modal_background');
-            $('#add_to_cart').submit(function(event)
-            {
-                modal.style.display = 'block';
+            $('#add_to_cart').submit(function(event){
                 event.preventDefault();
+                modal.style.display = 'block';
+
+                /*send post data to controller*/
+                var formData = $(this).serialize();
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    success: function(response){
+                        console.log(response);
+                    },
+                    error: function(xhr, status, error){
+                        console.error(error);
+                    }
+                });
+                /*increment the cart value*/
+                let currentTotal = parseInt($("#total_cart").text());
+                $("#total_cart").text(currentTotal + 1);
             });
-            $('#close_success').click(function()
-            {
+            $('#close_success').click(function(){
                 modal.style.display = 'none';
             });
             var logout_modal = document.getElementById('logout_modal');
-            $('#expand_more').click(function()
-            {
+            $('#expand_more').click(function(){
                 if(logout_modal.style.display === 'none')
                 {
                     logout_modal.style.display = 'block';
@@ -331,21 +345,20 @@
                 let price = parseInt($("#add_to_cart input[type='hidden']").val());
                 let total = price * quantity;
                 $("#total_amount").text("$ " + total);
+                $("input[name='total_price']").val(total);
             });
             /*handle search*/
             function handleSearch(){
             let name = $("#form_success_nav").find("input[name='search']").val();
             let url = "<?php echo base_url('/product_view/')?>" + encodeURIComponent(name);
 
-            // Replace the current URL in the address bar
+            /*replace the current URL in the address bar*/
             history.replaceState(null, '', url);
 
-            // Perform AJAX request
             $.ajax({
                 url: url,
                 type: "GET",
                 success: function(data){
-                    // console.log(data);
                     location.reload();
                 }, 
                 error: function(xhr, status, error){
@@ -353,7 +366,6 @@
                 }
             });
         }
-
             $("#form_success_nav").submit(function(e){
                 e.preventDefault();
                 handleSearch();

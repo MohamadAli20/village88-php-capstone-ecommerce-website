@@ -50,11 +50,13 @@
                         </figure>
 <?php                   }
                     }  
-?>                  <form id="add_to_cart" action="" method="post">
+?>                  <form id="add_to_cart" action="/products/add_to_cart" method="post">
+                        <input name="product_id" type="hidden" value="<?=$product['id']?>">
                         <input type="hidden" value="<?=$product['price']?>">
                         <label>Quantity
                             <input type="number" name="quantity" min="1" value="1"/>
                         </label>
+                        <input name="total_price" type="hidden" value="<?=$product['price']?>">
                         <p>Total Amount<span id="total_amount">$ <?=$product['price']?></span></p>
                         <button type="submit">
                             <i class="fa-solid fa-cart-shopping"></i> Add to Cart
@@ -112,13 +114,13 @@
     </div>
     <div id="logout_modal">
        <p>Logout</p>
-       <i class="fa-solid fa-right-from-bracket"></i>
+       <a href="/products/login"><i class="fa-solid fa-right-from-bracket"></i></a>
     </div>
     <div id="modal_background">
         <div class="success_added">
             <i class="fa-solid fa-check"></i>
             <p>Added to cart successfully!</p>
-            <a href="#" id="close_success"><i class="fa-solid fa-xmark"></i></a>
+            <i id="close_success" class="fa-solid fa-xmark"></i>
         </div>
     </div>
 </body>

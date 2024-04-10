@@ -52,7 +52,8 @@ class Products extends CI_Controller
 		}
 		else
 		{
-		$this->load->view('partials/partial_success_nav');
+		$total_cart = $this->get_count_cart();
+		$this->load->view('partials/partial_success_nav', array('total_cart' => $total_cart));
 		}
 		$this->load->view('catalog_body', $product_data);
 	}
@@ -75,7 +76,6 @@ class Products extends CI_Controller
 		return $this->Product->get_count_product();
 	}
 
-
 	/*
 	* Render Product View Page
 	* Display specific product
@@ -85,29 +85,26 @@ class Products extends CI_Controller
 		$parsed_value = intval($value);
 		if($parsed_value > 0)
 		{
-			$product = $this->get_product_by_id($value);
+			$product = $this->get_product_by_value($value); /*retrieve product by id*/
 		}
 		else
 		{
-			$product = $this->get_product_by_id($value);
+			$product = $this->get_product_by_value($value); /*Search or retrieve product by name*/
 		}
+		$total_cart = $this->get_count_cart();
 		/*set category in the session for similar items*/
 		$similar_products = $this->get_similar_items($product['category']);
 		$this->load->view('product_view_head');
 		$this->load->view('partials/partial_side');
-		$this->load->view('partials/partial_success_nav');
+		$this->load->view('partials/partial_success_nav', array('total_cart' => $total_cart));
 		$this->load->view('product_view_body', array('product' => $product, 'similar_items' => $similar_products));
 	}
 	/*
-	* Retrieve product by product id
+	* Retrieve product by product id or name
 	*/
-	public function get_product_by_id($id)
+	public function get_product_by_value($value)
 	{
-		return $this->Product->select_product_by_id($id);
-	}
-	public function get_product_by_name($name)
-	{
-		return $this->Product->select_product_by_name($name);
+		return $this->Product->select_product_by_value($value);
 	}
 	/* 
 	* Retrieve similar products by category
@@ -116,12 +113,39 @@ class Products extends CI_Controller
 	{
 		return $this->Product->select_similar_products($category);
 	}
+	/*
+	* Insert product in the
+	*/
+	public function add_to_cart()
+	{
+		$product = $this->input->post();
+		$user = $this->session->userdata("name");
+		$cart_info = array(
+			'user_id' => $user['user_id'],
+			'product_id' => $product['product_id'],
+			'quantity' => $product['quantity'],
+			'total' => $product['total_price'],
+			'created_at' => date('Y-m-d H:i:a')
+		);
+		$this->Product->insert_to_cart($cart_info);
+	}
+	/*
+	* get the total cart
+	*/
+	public function get_count_cart()
+	{
+		return $this->Product->select_count_cart();
+	}
 
+	/*
+	* Render CART PAGE
+	*/
 	public function cart()
 	{
+		$total_cart = $this->get_count_cart();
 		$this->load->view('cart_head');
 		$this->load->view('partials/partial_side');
-		$this->load->view('partials/partial_success_nav');
+		$this->load->view('partials/partial_success_nav', array('total_cart' => $total_cart));
 		$this->load->view('cart_body');
 	}
 	
@@ -136,6 +160,7 @@ class Products extends CI_Controller
 	}
 	public function login()
 	{
+		$this->session->unset_userdata('name');
 		$this->load->view('login');
 	}
 	public function success_login()
@@ -216,6 +241,7 @@ class Products extends CI_Controller
 			if(is_array($result)) /*if email exist in the database proceed to validate password*/
 			{
 				$name = array(
+					'user_id' => $result['id'],
 					'first_name' => $result['first_name'], 
 					'last_name' => $result['last_name']);
 				$this->session->set_userdata("name", $name); /*set the username in the session*/

@@ -22,7 +22,6 @@
                     <div class="remove_modal" id="remove_modal<?=$i?>">
                         <p>Are you sure you want to remove this item?</p>
                         <button class="btn_cancel" id="cancel<?=$i?>"><a href="#">Cancel</a></button>
-                        <!-- Add backend logic -->
                         <button class="btn_remove" id="remove<?=$i?>"><a href="#">Remove</a></button>
                     </div>
                 </figure>

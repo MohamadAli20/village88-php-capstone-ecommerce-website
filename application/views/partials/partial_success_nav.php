@@ -6,7 +6,7 @@
             <div>
 <?php       $name = $this->session->userdata("name");
 ?>              <h3><?= $name['first_name'] . " " . $name['last_name']; ?></h3>
-                <img id="expand_more" src="/assets/expand_more.svg" alt="expand more icon">
+                <img id="expand_more" src="/assets/expand_more.svg" alt="expand more icon"></a>
             </div>
         </nav>  
         <main>
@@ -20,6 +20,6 @@
                     </button>
                 </form>
                 <a href="/products/cart">
-                    <i class="fa-solid fa-cart-shopping"></i>Cart(0)
+                    <i class="fa-solid fa-cart-shopping"></i>Cart(<span id="total_cart"><?=$total_cart['total']?></span>)
                 </a>
             </header>
