@@ -15,7 +15,6 @@
             .listed_items .cart_info, .cart_info div, .other_info{
                 display: inline-block;
                 vertical-align: top;
-                /* position: relative; */
             }
             .listed_items figure{
                 padding: 0;
@@ -418,6 +417,7 @@
                 
                 /*collect the shipping information*/
                 let formData = {};
+                formData.mainImage = $(".main_image").first().attr("src");
 
                 let isChecked = $("input[type='checkbox']").is(":checked");
                 if(isChecked){
@@ -430,6 +430,7 @@
                     formData.billingData = $("#billing_info").serializeArray();
                     formData.orderSummary = $("#order_summary").serializeArray();
                 }
+
                 $.ajax({
                     url: "<?php echo base_url("/products/add_order"); ?>",
                     type: "POST",

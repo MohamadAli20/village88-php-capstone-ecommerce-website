@@ -84,8 +84,8 @@
         
         public function update_status($status, $orderId)
         {
-            $query = "UPDATE orders SET status = ? WHERE id = ?";
-            $values = array($status, $orderId);
+            $query = "UPDATE orders SET status = ?, updated_at = ? WHERE id = ?";
+            $values = array($status, date('Y-m-d H:i:a'), $orderId);
             $this->db->query($query, $values);
         }
 

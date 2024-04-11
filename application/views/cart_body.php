@@ -11,7 +11,7 @@
                 {
                     if($key === $carts[$i]['main_image'])
                     {
-?>                  <img src="/<?=$image?>" alt="<?=$image?>">
+?>                  <img class="main_image" src="/<?=$image?>" alt="<?=$image?>">
 <?php               }
                 }
 ?>                  <figcaption>

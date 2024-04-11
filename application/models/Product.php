@@ -219,10 +219,11 @@
             $result = $this->db->query($count_query)->row_array();
             
             /*Insert order information*/
-            $query1 = "INSERT INTO orders(id, user_id, total_items, order_date, total_amount, status, created_at) VALUES(?,?,?,?,?,?,?)";
+            $query1 = "INSERT INTO orders(id, user_id, product_image, total_items, order_date, total_amount, status, created_at) VALUES(?,?,?,?,?,?,?,?)";
             $values1 = array(
                 'id' => intval($result['count']) + 1,
                 'user_id' => $user_id,
+                'product_image' => $data['mainImage'],
                 'total_items' => $data['orderSummary'][2]['value'],
                 'order_date' => date('Y-m-d H:i:a'),
                 'total_amount' => $data['orderSummary'][3]['value'],

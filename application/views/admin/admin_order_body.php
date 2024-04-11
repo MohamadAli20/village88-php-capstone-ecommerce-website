@@ -30,19 +30,18 @@
             <li>Total Amount</li>
             <li>Status</li>
         </ul>
-<?php   var_dump($orders);
-        for($i = 0; $i < count($orders); $i++)
+<?php   for($i = 0; $i < count($orders); $i++)
         {
 ?>      <form class="display_product">
             <input type="hidden" value="<?= $orders[$i]['id']; ?>">
             <figure>
-                <img src="">
+                <img src="<?= $orders[$i]['product_image']; ?>">
                 <figcaption><?= $orders[$i]['total_items']; ?> item/s</figcaption>
             </figure>
             <p><?= $orders[$i]['id']; ?></p>
             <p><?= date('m/d/y', strtotime($orders[$i]['order_date'])); ?></p>
             <p>
-                <?= $orders[$i]['receiver']; ?>
+                <?= $orders[$i]['receiver']; ?><br/>
                 <span><?= $orders[$i]['address1']; ?></span>
             </p>
             <p><?= $orders[$i]['total_amount']; ?></p>
