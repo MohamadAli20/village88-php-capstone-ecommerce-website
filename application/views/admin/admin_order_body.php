@@ -30,7 +30,8 @@
             <li>Total Amount</li>
             <li>Status</li>
         </ul>
-<?php   for($i = 0; $i < count($orders); $i++)
+<?php   var_dump($orders);
+        for($i = 0; $i < count($orders); $i++)
         {
 ?>      <form class="display_product">
             <input type="hidden" value="<?= $orders[$i]['id']; ?>">
@@ -42,7 +43,7 @@
             <p><?= date('m/d/y', strtotime($orders[$i]['order_date'])); ?></p>
             <p>
                 <?= $orders[$i]['receiver']; ?>
-                <span><?= $orders[$i]['address']; ?></span>
+                <span><?= $orders[$i]['address1']; ?></span>
             </p>
             <p><?= $orders[$i]['total_amount']; ?></p>
             <select name="status">

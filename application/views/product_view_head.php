@@ -342,7 +342,7 @@
             });
             $("#add_to_cart input[type='number']").on('input', function(e){
                 let quantity = e.target.value;
-                let price = parseInt($("#add_to_cart input[type='hidden']").val());
+                let price = parseInt($("#add_to_cart input[name='price']").val());
                 let total = price * quantity;
                 $("#total_amount").text("$ " + total);
                 $("input[name='total_price']").val(total);

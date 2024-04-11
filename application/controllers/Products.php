@@ -134,7 +134,8 @@ class Products extends CI_Controller
 	*/
 	public function get_count_cart()
 	{
-		return $this->Product->select_count_cart();
+		$user_id = $this->session->userdata('name')['user_id'];
+		return $this->Product->select_count_cart($user_id);
 	}
 
 	/*
@@ -143,12 +144,41 @@ class Products extends CI_Controller
 	public function cart()
 	{
 		$total_cart = $this->get_count_cart();
+		$user_id = $this->session->userdata('name')['user_id'];
+		$carts = $this->get_all_cart($user_id);
+		// $total_items = $this->get_total_items($user_id);
+		
 		$this->load->view('cart_head');
 		$this->load->view('partials/partial_side');
 		$this->load->view('partials/partial_success_nav', array('total_cart' => $total_cart));
-		$this->load->view('cart_body');
+		$this->load->view('cart_body', array('carts' => $carts, 'total_cart' => $total_cart));
 	}
-	
+	/* retrieve all added product to the cart */
+	public function get_all_cart($user_id)
+	{
+		return $this->Product->select_all_cart($user_id);
+	}
+	/* delete specific cart by id */
+	public function remove_cart_by_id($cart_id)
+	{
+		$this->Product->delete_cart_by_id($cart_id);
+	}
+	/* get total items */
+	public function get_total_items()
+	{
+		$user_id = $this->session->userdata('name')['user_id'];
+		$data = $this->Product->select_total_amount($user_id);
+		// Return the data as JSON
+        header('Content-Type: application/json');
+        echo json_encode($data);
+	}
+	/* insert shipping address */
+	public function add_order()
+	{
+		$user_id = $this->session->userdata('name')['user_id'];
+		$data = $this->input->post();
+		$this->Product->insert_order($user_id, $data);
+	}
 
 	/*
 	* SIGN UP & LOGIN

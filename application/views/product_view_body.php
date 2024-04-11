@@ -52,7 +52,7 @@
                     }  
 ?>                  <form id="add_to_cart" action="/products/add_to_cart" method="post">
                         <input name="product_id" type="hidden" value="<?=$product['id']?>">
-                        <input type="hidden" value="<?=$product['price']?>">
+                        <input name="price" type="hidden" value="<?=$product['price']?>">
                         <label>Quantity
                             <input type="number" name="quantity" min="1" value="1"/>
                         </label>

@@ -178,10 +178,88 @@
             $query = "INSERT INTO carts(user_id, product_id, quantity, total_amount, created_at) VALUES(?,?,?,?,?)";
             $this->db->query($query, $cart_info);
         }
-        public function select_count_cart()
+        public function select_count_cart($user_id)
         {
-            $query = "SELECT COUNT(*) AS total FROM carts";
-            return $this->db->query($query)->row_array();
+            $query = "SELECT COUNT(*) AS total FROM carts WHERE user_id = ?";
+            return $this->db->query($query, $user_id)->row_array();
+        }
+
+        /*
+        * Retrieve data for Cart
+        */
+        public function select_all_cart($user_id)
+        {
+            $query = "SELECT carts.*, products.category, products.price, products.images, products.main_image 
+                        FROM carts
+                        LEFT JOIN products ON carts.user_id = products.id
+                        WHERE carts.user_id = ?";
+            return $this->db->query($query, $user_id)->result_array();
+        }
+        /*
+        * Delete specific cart
+        */
+        public function delete_cart_by_id($cart_id)
+        {
+            $query = "DELETE FROM carts WHERE id = ?";
+            $this->db->query($query, $cart_id);
+        }
+        public function select_total_amount($user_id)
+        {
+            $query = "SELECT SUM(total_amount) AS total_items
+                        FROM carts
+                        WHERE user_id = ?";
+            return $this->db->query($query, $user_id)->row_array();
+        }
+        /*
+        * Insert shipping, billing and order
+        */
+        public function insert_order($user_id, $data)
+        {
+            $count_query = "SELECT COUNT(*) AS count FROM orders";
+            $result = $this->db->query($count_query)->row_array();
+            
+            /*Insert order information*/
+            $query1 = "INSERT INTO orders(id, user_id, total_items, order_date, total_amount, status, created_at) VALUES(?,?,?,?,?,?,?)";
+            $values1 = array(
+                'id' => intval($result['count']) + 1,
+                'user_id' => $user_id,
+                'total_items' => $data['orderSummary'][2]['value'],
+                'order_date' => date('Y-m-d H:i:a'),
+                'total_amount' => $data['orderSummary'][3]['value'],
+                'status' => "Pending",
+                'created_at' => date('Y-m-d H:i:a')
+            );
+            $this->db->query($query1, $values1);
+            
+            /*Insert shipping information*/
+            $query2 = "INSERT INTO shippings(order_id, first_name, last_name, address1, address2, city, state, zip, created_at) VALUES(?,?,?,?,?,?,?,?,?)";
+            $values2 = array(
+                'order_id' => intval($result['count']) + 1,
+                'first_name' => $data['shippingData'][1]['value'],
+                'last_name' => $data['shippingData'][2]['value'],
+                'address1' => $data['shippingData'][3]['value'],
+                'address2' => $data['shippingData'][4]['value'],
+                'city' => $data['shippingData'][5]['value'],
+                'state' => $data['shippingData'][6]['value'],
+                'zip' => $data['shippingData'][7]['value'],
+                'created_at' => date('Y-m-d H:i:a')
+            );
+            $this->db->query($query2, $values2);
+
+            /*Insert billing information*/
+            $query3 = "INSERT INTO billings(order_id, first_name, last_name, address1, address2, city, state, zip, created_at) VALUES(?,?,?,?,?,?,?,?,?)";
+            $values3 = array(
+                'order_id' => intval($result['count']) + 1,
+                'first_name' => $data['billingData'][1]['value'],
+                'last_name' => $data['billingData'][2]['value'],
+                'address1' => $data['billingData'][3]['value'],
+                'address2' => $data['billingData'][4]['value'],
+                'city' => $data['billingData'][5]['value'],
+                'state' => $data['billingData'][6]['value'],
+                'zip' => $data['billingData'][7]['value'],
+                'created_at' => date('Y-m-d H:i:a')
+            );
+            $this->db->query($query3, $values3);
         }
     }
 ?>
