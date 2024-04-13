@@ -2,8 +2,7 @@
         
         <div class="listed_items">
             <div class="cart_info">
-<?php       
-            for($i = 0; $i < count($carts); $i++)
+<?php       for($i = 0; $i < count($carts); $i++)
             { 
 ?>              <figure id="product<?=$carts[$i]['id']?>">
 <?php           $images = json_decode($carts[$i]['images']);    
@@ -29,13 +28,18 @@
                         <button class="btn_remove" data-cart-id="<?=$carts[$i]['id']?>" data-total-amount="<?=$carts[$i]['total_amount']?>">Remove</button>
                     </div>
                 </figure>
-<?php       }   ?>
+<?php       }   
+?>              <!-- If no cart added -->
+                <div class="no_cart">
+                    <h3>There are no items in this cart</h3>
+                    <a href="/">Continue Shopping</a>
+                </div>
             </div>
             <div class="other_info">
                 <form id="shipping_info" class="shipping_billing_info">
                     <h3>Shipping Information</h3>
                     <label id="checkbox">
-                        <input type="checkbox" name="checkbox" checked> Same in Billing
+                        <input type="checkbox" checked> Same in Billing
                     </label>
                     <div>
                         <label class="name">
@@ -91,7 +95,7 @@
                         </label>
                     </div>
                 </form>
-                <form id="order_summary" class="shipping_billing_info">
+                <form id="order_summary" class="shipping_billing_info" method="post">
                     <h3>Order Summary</h3>
                     <p><span>Items</span><span class="fees" id="total_items"></span></p>
                     <input type="hidden" value="" name="total_items">
@@ -109,7 +113,7 @@
         <header>
             <img src="/assets/logo.svg" alt="company logo">
             <img src="/assets/visa_mastercard.svg" alt="visa and master card logo">
-            <i class="fa-solid fa-xmark"></i>
+            <i id="close_payment" class="fa-solid fa-xmark"></i>
         </header>
         <main>
         <h3>Card Details</h3>
@@ -130,9 +134,13 @@
         </main>
         <footer>
             <p>Total Amount: <span>$45</span></p>
-            <input type="submit" value="Pay">
+            <input id="submit_payment" type="submit" value="Pay">
         </footer>
     </form>
     <div id="gray_background"></div>
+    <div id="logout_modal">
+       <p>Logout</p>
+       <a href="/products/login"><i class="fa-solid fa-right-from-bracket"></i></a>
+    </div>
 </body>
 </html>

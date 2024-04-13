@@ -32,6 +32,7 @@
         </ul>
 <?php   for($i = 0; $i < count($orders); $i++)
         {
+            // var_dump($orders);
 ?>      <form class="display_product">
             <input type="hidden" value="<?= $orders[$i]['id']; ?>">
             <figure>

@@ -114,7 +114,7 @@ class Products extends CI_Controller
 		return $this->Product->select_similar_products($category);
 	}
 	/*
-	* Insert product in the
+	* Insert cart
 	*/
 	public function add_to_cart()
 	{
@@ -178,6 +178,7 @@ class Products extends CI_Controller
 		$user_id = $this->session->userdata('name')['user_id'];
 		$data = $this->input->post();
 		$this->Product->insert_order($user_id, $data);
+		$this->Product->delete_cart_by_user_id($user_id); /*delete cart after adding order*/
 	}
 
 	/*
@@ -275,7 +276,14 @@ class Products extends CI_Controller
 					'first_name' => $result['first_name'], 
 					'last_name' => $result['last_name']);
 				$this->session->set_userdata("name", $name); /*set the username in the session*/
-				redirect("/");
+				if($result['is_admin'] == '1')
+				{
+					redirect('/dashboards/orders');
+				}
+				else
+				{
+					redirect('/');
+				}
 			}
 			if($result === false)
 			{

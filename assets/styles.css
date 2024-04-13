@@ -29,10 +29,12 @@ body{
     }
     .container-tab a{
         display: block;
-        background-color: rgba(243, 248, 253, 1);
         border-radius: 15px;
         padding: 15px 0;
         margin: 5px;
+    }
+    .container-tab #product_view_icon{
+        background-color: rgba(243, 248, 253, 1);
     }
         .container-tab a img{
             width: 21px;

@@ -77,7 +77,6 @@
             );
         }
 
-        
         /*retrieve the total product*/
         public function get_total_products($category = null)
         {
@@ -85,59 +84,7 @@
             return $this->db->query($query)->row_array();
         }
 
-        /*
-        * insert, retrieve and verify user account with the database
-        */
-        public function create($user_info)
-        {
-            $isEmailExist = $this->get_user_by_email($user_info['email']);
-            if(isset($isEmailExist))
-            {
-                return true; /*meaning email already used by other user*/
-            }
-            else{
-                $query = "INSERT INTO users(first_name, last_name, email, encrypted_password, salt, created_at) VALUES(?,?,?,?,?,?)";
-                $values = array(
-                    'first_name' => $user_info['first_name'], 
-                    'last_name' => $user_info['last_name'], 
-                    'email' => $user_info['email'], 
-                    'password' => $user_info['password'], 
-                    'salt' => $user_info['salt'], 
-                    'created_at' => date('Y-m-d H:i:a'));
-                $this->db->query($query, $values);
-                return false;
-            }
-        }
-        public function get_user_by_email($email)
-        {
-            $query = "SELECT * FROM users WHERE email = ?";
-            return $this->db->query($query, $email)->row_array();
-        }
-        public function verify_account($user_info)
-        {
-            $isEmailExist = $this->get_user_by_email($user_info['email']);
-            if(isset($isEmailExist))
-            {
-                $password = md5($user_info['password'] . $isEmailExist['salt']);
-                if($password === $isEmailExist['encrypted_password'])
-                {
-                    $user_name = array(
-                        "id" => $isEmailExist['id'],
-                        "first_name" => $isEmailExist['first_name'],
-                        "last_name" => $isEmailExist['last_name']
-                    );
-                    return $user_name;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
-        }
+        
 
         /*
         * FOR PRODUCT VIEW
@@ -191,7 +138,7 @@
         {
             $query = "SELECT carts.*, products.category, products.price, products.images, products.main_image 
                         FROM carts
-                        LEFT JOIN products ON carts.user_id = products.id
+                        LEFT JOIN products ON carts.product_id = products.id
                         WHERE carts.user_id = ?";
             return $this->db->query($query, $user_id)->result_array();
         }
@@ -236,13 +183,13 @@
             $query2 = "INSERT INTO shippings(order_id, first_name, last_name, address1, address2, city, state, zip, created_at) VALUES(?,?,?,?,?,?,?,?,?)";
             $values2 = array(
                 'order_id' => intval($result['count']) + 1,
-                'first_name' => $data['shippingData'][1]['value'],
-                'last_name' => $data['shippingData'][2]['value'],
-                'address1' => $data['shippingData'][3]['value'],
-                'address2' => $data['shippingData'][4]['value'],
-                'city' => $data['shippingData'][5]['value'],
-                'state' => $data['shippingData'][6]['value'],
-                'zip' => $data['shippingData'][7]['value'],
+                'first_name' => $data['shippingData'][0]['value'],
+                'last_name' => $data['shippingData'][1]['value'],
+                'address1' => $data['shippingData'][2]['value'],
+                'address2' => $data['shippingData'][3]['value'],
+                'city' => $data['shippingData'][4]['value'],
+                'state' => $data['shippingData'][5]['value'],
+                'zip' => $data['shippingData'][6]['value'],
                 'created_at' => date('Y-m-d H:i:a')
             );
             $this->db->query($query2, $values2);
@@ -251,16 +198,89 @@
             $query3 = "INSERT INTO billings(order_id, first_name, last_name, address1, address2, city, state, zip, created_at) VALUES(?,?,?,?,?,?,?,?,?)";
             $values3 = array(
                 'order_id' => intval($result['count']) + 1,
-                'first_name' => $data['billingData'][1]['value'],
-                'last_name' => $data['billingData'][2]['value'],
-                'address1' => $data['billingData'][3]['value'],
-                'address2' => $data['billingData'][4]['value'],
-                'city' => $data['billingData'][5]['value'],
-                'state' => $data['billingData'][6]['value'],
-                'zip' => $data['billingData'][7]['value'],
+                'first_name' => $data['billingData'][0]['value'],
+                'last_name' => $data['billingData'][1]['value'],
+                'address1' => $data['billingData'][2]['value'],
+                'address2' => $data['billingData'][3]['value'],
+                'city' => $data['billingData'][4]['value'],
+                'state' => $data['billingData'][5]['value'],
+                'zip' => $data['billingData'][6]['value'],
                 'created_at' => date('Y-m-d H:i:a')
             );
             $this->db->query($query3, $values3);
+        }
+        public function delete_cart_by_user_id($user_id)
+        {
+            $query = "DELETE FROM carts WHERE user_id = ?";
+            $this->db->query($query, $user_id);
+        }
+        
+        /*
+        * FOR SIGN UP & LOGIN 
+        * insert, retrieve and verify user account with the database
+        */
+        public function create($user_info)
+        {
+            $isEmailExist = $this->get_user_by_email($user_info['email']);
+            if(isset($isEmailExist))
+            {
+                return true; /*meaning email already used by other user*/
+            }
+            else{
+                $is_admin = 0; /*not admin*/
+                $account = $this->firstRegister();
+                if($account['total_user'] == '0')
+                {
+                    $is_admin = 1; /*admin*/
+                }
+                $query = "INSERT INTO users(first_name, last_name, is_admin, email, encrypted_password, salt, created_at) VALUES(?,?,?,?,?,?,?)";
+                $values = array(
+                    'first_name' => $user_info['first_name'], 
+                    'last_name' => $user_info['last_name'], 
+                    'is_admin' => $is_admin,
+                    'email' => $user_info['email'],
+                    'password' => $user_info['password'], 
+                    'salt' => $user_info['salt'], 
+                    'created_at' => date('Y-m-d H:i:a'));
+                $this->db->query($query, $values);
+                return false;
+            }
+        }
+        public function firstRegister() /*first account to be registered is the admin*/
+        {
+            $query = "SELECT COUNT(*) as total_user FROM users";
+            return $this->db->query($query)->row_array();
+        }
+        public function get_user_by_email($email)
+        {
+            $query = "SELECT * FROM users WHERE email = ?";
+            return $this->db->query($query, $email)->row_array();
+        }
+        public function verify_account($user_info)
+        {
+            $isEmailExist = $this->get_user_by_email($user_info['email']);
+            if(isset($isEmailExist))
+            {
+                $password = md5($user_info['password'] . $isEmailExist['salt']);
+                if($password === $isEmailExist['encrypted_password'])
+                {
+                    $user_name = array(
+                        "is_admin" => $isEmailExist['is_admin'],
+                        "id" => $isEmailExist['id'],
+                        "first_name" => $isEmailExist['first_name'],
+                        "last_name" => $isEmailExist['last_name']
+                    );
+                    return $user_name;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 ?>

@@ -12,6 +12,11 @@
         .listed_items{
             margin-top: 20px;
         }
+            .listed_items .cart_info{
+                width: 750px;
+                height: 100vh;
+                /* border: 1px solid black; */
+            }
             .listed_items .cart_info, .cart_info div, .other_info{
                 display: inline-block;
                 vertical-align: top;
@@ -99,6 +104,28 @@
                     padding: 15px;
                     color: rgba(202, 220, 237, 1);
                 }
+                .listed_items .no_cart{
+                    width: 750px;
+                    height: 200px;
+                    border-radius: 20px;
+                    background: rgba(255, 255, 255, 1);
+                    box-shadow: 0px 0px 14.869999885559082px 0px rgba(156, 137, 255, 0.33);
+                    text-align: center;
+                    display: none;
+                }
+                    .listed_items .no_cart h3{
+                        padding: 20px;
+                        padding-top: 50px;
+                    }
+                    .listed_items .no_cart a{
+                        width: 91.5%;
+                        padding: 20px;
+                        padding-left: 20px;
+                        border-radius: 10px;
+                        border: 1px solid rgba(156, 137, 255, 1);
+                        background: rgba(255, 255, 255, 1);
+                        color: rgba(156, 137, 255, 1);
+                    }
             .other_info{
                 width: 33%;
                 margin-left: 10px;
@@ -120,7 +147,6 @@
                     display: inline-block;
                     vertical-align: top;
                     background: green;
-                    
                 }
                 .shipping_billing_info div{
                     width: 100%;
@@ -245,7 +271,7 @@
             box-shadow: 0px 4.373316764831543px 21.866580963134766px 0px rgba(0, 0, 0, 0.07);
             text-align: center;
             position: absolute;
-            top: 60px;
+            top: 70px;
             right: 32.5%;
             left: 32.5%;
             box-sizing: border-box;
@@ -313,10 +339,52 @@
                     color: white;
                     width: 90%;
                 }
+                #logout_modal{
+            position: absolute;
+            top: 70px;
+            right: 10px;
+            font-size: 16px;
+            width: 200px;
+            height: 64px;
+            box-shadow: 0px 4.373316764831543px 12px 0px rgba(156, 137, 255, 0.28);
+            background-color: rgba(255, 255, 255, 1);
+            border-radius: 20px;
+            display: none;
+        }
+            #logout_modal p, #logout_modal i{
+                display: inline-block;
+                vertical-align: middle;
+                color: rgba(120, 120, 120, 1);
+                margin: 0;
+                line-height: 65px;
+            }
+            #logout_modal p{
+                width: 60%;
+                margin-left: 20px;
+            }
+            #logout_modal i{
+                font-size: 22px;
+                color: rgba(208, 199, 253, 1);
+                margin-right: 20px;
+            }
     </style>
     <script>
         $(document).ready(function()
         {
+            /*FOR LOGOUT*/
+            var logout_modal = document.getElementById('logout_modal');
+            $('#expand_more').click(function()
+            {
+                if(logout_modal.style.display === 'none')
+                {
+                    logout_modal.style.display = 'block';
+                }
+                else
+                {
+                    logout_modal.style.display = 'none';
+                }
+            });
+
             /*FOR MODAL*/
             $('.remove-button').click(function() {
                 let cartId = $(this).data('cart-id');
@@ -351,7 +419,6 @@
                 $("input[name='shipping_fee']").val(shippingFee);
                 /*update total*/
                 let total_fee = updatedTotalItems + shippingFee;
-                console.log(total_fee);
                 $("#total_amount").text("$" + total_fee);
                 $("input[name='total_fee']").val(total_fee);
 
@@ -368,11 +435,20 @@
                 });
                 $('#product' + cartId).remove(); /*remove cart item*/
                 $('#gray_background').css('display', 'none');
-                /*increment the cart value*/
+                /*decrement the cart value*/
                 let currentTotal = parseInt($("#total_cart").text()) - 1;
                 $("#total_cart").text(currentTotal);
                 $("input[name='num_items']").val(currentTotal);
+                /*display no cart message if the currrent total is zero*/
+                if(currentTotal === 0){
+                    $(".no_cart").css('display', 'block');
+                }
             });
+            /*FOR NO CART MESSAGE*/
+            let totalCart = parseInt($("#total_cart").text()); /*display no cart message if the currrent total is zero*/
+            if(totalCart === 0){
+                $(".no_cart").css('display', 'block');
+            }
 
             /*FOR SHIPPING AND BILLING*/
             $("input[type='checkbox']").on('change', function() {
@@ -410,11 +486,28 @@
             }
             handleTotalItems();
 
+            /*FOR PAYMENT*/
+            $("#close_payment").click(function(){
+                $("#payment").css("display", "none");
+                $("#gray_background").css("display", "none");
+            })
             $("#proceed_checkout").click(function(e){
                 e.preventDefault();
-                // $("#payment").css({"display": "block"});
-                // $("#gray_background").css({"display": "block"});
+                $("html, body").animate({ scrollTop: 0 }, "slow"); /*scroll up*/
+                if(totalCart !== 0){
+                    $("#payment").css({
+                        "display": "block",
+                        "zIndex": "2"
+                    });
+                    $("#gray_background").css({"display": "block"});
+                }
+            });
+
+            $("#submit_payment").click(function(){
                 
+                $("#payment").css("display", "none");
+                $("#gray_background").css("display", "none");
+            
                 /*collect the shipping information*/
                 let formData = {};
                 formData.mainImage = $(".main_image").first().attr("src");
@@ -430,7 +523,6 @@
                     formData.billingData = $("#billing_info").serializeArray();
                     formData.orderSummary = $("#order_summary").serializeArray();
                 }
-
                 $.ajax({
                     url: "<?php echo base_url("/products/add_order"); ?>",
                     type: "POST",
