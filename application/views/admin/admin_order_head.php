@@ -9,18 +9,16 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="/assets/styles.css">
     <link rel="stylesheet" href="/assets/partial_admin_side_nav.css">
+    <link rel="stylesheet" href="/assets/admin_order.css">
     <style>
-        .show_category form{
-            padding: 20px;
-            margin-bottom: 10px;
+        body{
+            background: rgba(33, 35, 50, 1);
         }
-        .show_category a{
-            font-size: 16px;
-            border: 1px solid black;
-            padding: 0 10px;
-            text-decoration: none;
-            color: black;
-        }
+            .admin_side_tab #orders{
+                background-color: rgba(156, 137, 255, 0.2);
+                border-top-right-radius: 11px;
+                border-bottom-right-radius: 11px;
+            }
     </style>
     <script>
         $(document).ready(function(){

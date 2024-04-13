@@ -3,113 +3,76 @@
 }
 body{
     font-size: 16px;
+    color: rgba(255, 255, 255, 1);
 }
 .admin_side_tab{
-    width: 10%;
-    border-right: 1px solid black;
+    width: 15%;
 }
 main{
-    width: 90%;
+    width: 85%;
 }
 .admin_side_tab, main{
     display: inline-block;
     vertical-align: top;
-    height: 100vh;
+    display: table-cell;
 }
     .admin_side_tab, .admin_nav{
-        background-color: gray;
+        background-color: rgba(44, 47, 65, 1);
     }
-    .admin_side_tab img{
-        width: 50px;
+    .admin_side_tab figure{
+        width: 100%;
+        display: block;
+        margin: 0 auto;
+        border-bottom:  1px solid rgba(61, 64, 84, 1);
+        margin-bottom: 35px;
     }
-    .admin_side_tab img, .admin_side_tab a{
+        .admin_side_tab img{
+            display: block;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+    .admin_side_tab a{
         display: block;
         padding: 10px;
+        color: rgba(255, 255, 255, 1);
+        text-decoration: none;
+        margin: 15px 20px 15px 0;
+        padding: 15px 0 15px 15px;
     }
 main{
     padding: 0;
     margin: 0;
 }
+    #admin_background_image{
+        background: rgba(217, 217, 217, 1);
+        position: absolute;
+        width: 85%;
+    }
     main .admin_nav{
-        padding: 20px;
-        text-align: right;
-        border-bottom: 1px solid black;
+        position: relative;
+        width: 100%;
+        height: 121px;
+        background: rgba(0, 0, 0, 0.76);
     }
-        .admin_nav h2{
-            margin: 0;
-        }
-    main form{
-        padding: 0 20px;
-    }
-        main form label input{
-            width: 300px;
-        }
-    main div{
-        display: inline-block;
-        vertical-align: top;
-        padding: 10px 20px;
-    }
-    main .category{
-        width: 15%;
-    }
-        .category p{
-            border: 1px solid black;
-            text-align: center;
-            padding: 20px 0;
-            border-radius: 10px;
-        }
-    main .show_category{
-        width: 80%;
-    }
-        .show_category ul{
-            padding: 0;
-            text-align: center;
-        }
-            .show_category ul li{
-                display: inline-block;
-                width: 140px;
-                text-align: center;
-            }
-        .show_category form{
-            text-align: center;
-            border: 1px solid black;
-        }
-            .show_category figure{
-                margin: 0;
-            }
-            .show_category img{
-                width: 50px;
-                height: 50px;
-                border: 1px solid black;
-                display: inline-block;
-                vertical-align: middle;
-            }
-            .show_category figcaption{
-                display: inline-block;
-                vertical-align: middle;
-            }
-            .show_category form figure, .show_category form p, .show_category form label{
-                display: inline-block;
-                width: 140px;
-                text-align: center;
-                vertical-align: middle;
-            }
-    footer{
-        text-align: right;
-        white-space: nowrap;
-        font-size: 0;
-    }
-        footer p{
+        .admin_nav figure, .admin_nav div{
             display: inline-block;
-            width: 50px;
-            border: 1px solid black;
-            text-align: center;
-            padding: 5px 0;
-            font-size: 16px;
+            vertical-align: top;
         }
-        footer .previous_arrow{
-            border-right: 0;
+        .admin_nav figure{
+            margin-left: 20px;
         }
-        footer .next_arrow{
-            border-left: 0;
+            .admin_nav figure img, .admin_nav figcaption{
+                display: inline-block;
+                vertical-align: middle;
+            }
+        .admin_nav div{
+            position: absolute;
+            right: 10px;
+            padding: 20px 0;
         }
+            .admin_nav div h3, .admin_nav div img{
+                display: inline-block;
+                padding: 0;
+                margin: 0;
+                vertical-align: middle;
+            }

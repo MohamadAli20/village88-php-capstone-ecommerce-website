@@ -1,21 +1,44 @@
 
-    <form>
-        <h1>Products</h1>
+    <form class="form_nav">
+        <h1>Orders</h1>
         <label>
             <input id="search" type="text" placeholder="Search order">
+            <figure>
+                <img src="/assets/search_purple.png" alt="search icon">
+            </figure>
         </label>
     </form>
     <div class="category">
-        <h3>Categories</h3>
-        <p><a href="?status=all">All Orders <span><?=$count['total_order']?></a></span></p>
-        <p><a href="?status=pending">Pending <span><?=$count['total_pending']?></span></a></p>
-        <p><a href="?status=on-process">On-Process <span><?=$count['total_on_process']?></span></a></p>
-        <p><a href="?status=shipped">Shipped <span><?=$count['total_shipped']?></span></a></p>
-        <p><a href="?status=delivered">Delivered <span><?=$count['total_delivered']?></span></a></p>
+        <h3>Status</h3>
+        <p>
+            <span><?=$count['total_order']?></span>
+            <img src="/assets/all_orders_icon.svg" alt="All orders icon">
+            <a href="?status=all">All Orders</a>
+        </p>
+        <p>
+            <span><?=$count['total_pending']?></span>
+            <img src="/assets/pending_icon.svg" alt="Pending icon">
+            <a href="?status=pending">Pending</a> 
+        </p>
+        <p>
+            <span><?=$count['total_on_process']?></span>
+            <img src="/assets/on_process_icon.svg" alt="On-Process icon">
+            <a href="?status=on-process">On-Process</a>
+        </p>
+        <p>
+            <span><?=$count['total_shipped']?></span>
+            <img src="/assets/shipped_icon.svg" alt="Shipped icon">
+            <a href="?status=shipped">Shipped</a>
+        </p>
+        <p>
+            <span><?=$count['total_delivered']?></span>
+            <img src="/assets/delivered_icon.svg" alt="Delivered icon">
+            <a href="?status=delivered">Delivered</a>
+        </p>
     </div>
     <div class="show_category">
         <ul>
-            <li>All 
+            <li class="all_column">All 
 <?php       $status = $this->session->userdata('status');
             if($status === null || $status === "all")
             {
@@ -26,13 +49,12 @@
             </li>
             <li>Order ID #</li>
             <li>Order Date</li>
-            <li>Receiver</li>
+            <li class="receiver_column">Receiver</li>
             <li>Total Amount</li>
-            <li>Status</li>
+            <li class="status_column">Status</li>
         </ul>
 <?php   for($i = 0; $i < count($orders); $i++)
         {
-            // var_dump($orders);
 ?>      <form class="display_product">
             <input type="hidden" value="<?= $orders[$i]['id']; ?>">
             <figure>
@@ -40,12 +62,12 @@
                 <figcaption><?= $orders[$i]['total_items']; ?> item/s</figcaption>
             </figure>
             <p><?= $orders[$i]['id']; ?></p>
-            <p><?= date('m/d/y', strtotime($orders[$i]['order_date'])); ?></p>
-            <p>
+            <p class="order_date"><?= date('m-d-y', strtotime($orders[$i]['order_date'])); ?></p>
+            <p class="receivers">
                 <?= $orders[$i]['receiver']; ?><br/>
-                <span><?= $orders[$i]['address1']; ?></span>
+                <span class="addresses"><?= $orders[$i]['address1']; ?></span>
             </p>
-            <p><?= $orders[$i]['total_amount']; ?></p>
+            <p>$<?= $orders[$i]['total_amount']; ?></p>
             <select name="status">
                 <option value="Pending" <?= ($orders[$i]['status'] == 'Pending') ? 'selected' : ''; ?>>Pending</option>
                 <option value="On-Process" <?= ($orders[$i]['status'] == 'On-Process') ? 'selected' : ''; ?>>On-Process</option>
@@ -58,15 +80,19 @@
 ?>      <footer>
 <?php       if($current_page > 1)
             {   
-?>          <a href="?page=<?=$current_page - 1;?>" class="previous_arrow"><</a>
+?>          <a href="?page=<?=$current_page - 1;?>" class="previous_arrow">
+                <img src="/assets/arrow-left.png" alt="Arrow left">
+            </a>
 <?php       }  
-            $numPage = ceil($total_per_status['total']/5);
+            $numPage = ceil($total_per_status['total']/10);
             for($page = 1; $page <= $numPage; $page++)
             {
 ?>          <a href="?page=<?=$page;?>"><?=$page;?></a>
 <?php       }
             if($current_page < $numPage){  
-?>          <a href="?page=<?=$current_page + 1;?>" class="next_arrow">></a>
+?>          <a href="?page=<?=$current_page + 1;?>" class="next_arrow">
+                <img src="/assets/arrow-right.png" alt="Arrow right">
+            </a>
 <?php       }   ?>
         </footer>
     </div>

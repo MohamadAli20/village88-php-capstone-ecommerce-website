@@ -1,0 +1,38 @@
+.form_nav input[type='button']{
+    background-color: red;
+    padding: 13px;
+    font-size: 16px;
+    border: none;
+    background: rgba(156, 137, 255, 1);
+    color: rgba(255, 255, 255, 1);
+    border-radius: 10px;
+}
+.display_product p{
+    color: rgba(126, 128, 142, 1);
+}
+.display_product .product_id{
+    color: rgba(255, 255, 255, 1);
+}
+.display_product .price span{
+    background: rgba(55, 58, 75, 1);
+    padding: 5px 10px;
+    border-radius: 33.43px;
+    color: rgba(202, 192, 255, 1);
+}
+.display_product .category, .show_category .category_column{
+    width: 150px;
+}
+.display_product div{
+    width: 120px;
+    height: 65px;
+    text-align: center;
+    border-left: 0.89px solid rgba(69, 73, 93, 1);
+}
+    .display_product div input[type='submit']{
+        background: rgba(55, 58, 75, 1);
+        color: rgba(202, 192, 255, 1);
+        border-radius: 10px;
+        border: none;
+        margin: 20px 0;
+        padding: 5px 10px;
+    }

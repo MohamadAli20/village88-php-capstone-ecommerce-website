@@ -12,7 +12,7 @@
             $page = ($current_page - 1) * 5;
             $select = "SELECT orders.*, CONCAT(shippings.first_name, ' ', shippings.last_name) AS receiver, shippings.address1 FROM orders 
                         LEFT JOIN shippings ON orders.id = shippings.order_id";
-            $limit = "LIMIT $page , 5";
+            $limit = "LIMIT $page , 10";
             if($status === null || $status === "all")
             {
                 $query = $select . " " . $limit;

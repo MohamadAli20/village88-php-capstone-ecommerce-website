@@ -1,23 +1,50 @@
 
-    <form>
+    <form class="form_nav">
         <h1>Products</h1>
         <label>
             <input id="search" type="text" placeholder="Search order">
+            <figure>
+                <img src="/assets/search_purple.png" alt="search icon">
+            </figure>
         </label>
         <input type="button" id="add_product" value="Add a Product">
     </form>
     <div class="category">
         <h3>Categories</h3>
-        <p><a href="?category=all">All Products <span><?=$count['all_total']?></a></span></p>
-        <p><a href="?category=vegetables">Vegetables <span><?=$count['vegetables_total']?></span></a></p>
-        <p><a href="?category=fruits">Fruits <span><?=$count['fruits_total']?></span></a></p>
-        <p><a href="?category=pork">Pork <span><?=$count['pork_total']?></span></a></p>
-        <p><a href="?category=beef">Beef <span><?=$count['beef_total']?></span></a></p>
-        <p><a href="?category=chicken">Chicken <span><?=$count['chicken_total']?></span></a></p>
+        <p>
+            <img src="/assets/all_products.png" alt="All products icon">
+            <span><?=$count['all_total']?></span>
+            <a href="?category=all">All Products</a>
+        </p>
+        <p>
+            <img src="/assets/fruits.png" alt="Fruit icon">
+            <span><?=$count['vegetables_total']?></span>
+            <a href="?category=vegetables">Vegetables</a>
+        </p>
+        <p>
+            <img src="/assets/vegetables.png" alt="Vegetables icon">
+            <span><?=$count['fruits_total']?></span>
+            <a href="?category=fruits">Fruits</a>
+        </p>
+        <p>
+            <img src="/assets/meat.png" alt="Meat icon">
+            <span><?=$count['pork_total']?></span>
+            <a href="?category=pork">Pork</a>
+        </p>
+        <p>
+            <img src="/assets/grains.png" alt="Grain icon">
+            <span><?=$count['beef_total']?></span>
+            <a href="?category=beef">Beef</a>
+        </p>
+        <p>
+            <img src="/assets/dairy.png" alt="Dairy icon">
+            <span><?=$count['chicken_total']?></span>
+            <a href="?category=chicken">Chicken</a>
+        </p>
     </div>
     <div class="show_category">
         <ul>
-            <li>All 
+            <li class="all_column">All 
 <?php       $category = $this->session->userdata('category');
             if($category === null || $category === "all")
             {
@@ -29,7 +56,7 @@
             </li>
             <li>Product ID #</li>
             <li>Price</li>
-            <li>Category</li>
+            <li class="category_column">Category</li>
             <li>Stocks</li>
             <li>Sold</li>
             <li></li>
@@ -49,9 +76,9 @@
             }   
 ?>              <figcaption><?= $products[$i]['name']; ?></figcaption>
             </figure>
-            <p><?= $products[$i]['id']; ?></p>
-            <p>$<span><?= $products[$i]['price']; ?></span></p>
-            <p><?= $products[$i]['category']; ?></p>
+            <p class="product_id"><?= $products[$i]['id']; ?></p>
+            <p class="price"><span>$<?= $products[$i]['price']; ?></span></p>
+            <p class="category"><?= $products[$i]['category']; ?></p>
             <p><?= $products[$i]['stocks']; ?></p>
             <p><?= $products[$i]['sold']; ?></p>
             <div>

@@ -9,12 +9,21 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="/assets/styles.css">
     <link rel="stylesheet" href="/assets/partial_admin_side_nav.css">
+    <link rel="stylesheet" href="/assets/admin_order.css">
+    <link rel="stylesheet" href="/assets/admin_product.css">
     <style>
         body{
-            position: relative;
-            width: 100%;
+            /* position: relative; */
+            /* width: 100%; */
+            background: rgba(33, 35, 50, 1);
         }
-        .show_category ul li{
+            .admin_side_tab #products{
+                background-color: rgba(156, 137, 255, 0.2);
+                border-top-right-radius: 11px;
+                border-bottom-right-radius: 11px;
+            }
+
+        /* .show_category ul li{
             display: inline-block;
             width: 120px;
             text-align: center;
@@ -32,11 +41,11 @@
                 padding: 0 10px;
                 text-decoration: none;
                 color: black;
-            }
+            } 
         .show_category form figure, .show_category form p, .show_category form div{
             width: 120px;
             vertical-align: middle;
-        }
+        }*/
         #form_modal{
             display: none;
             font-size: 16px;
