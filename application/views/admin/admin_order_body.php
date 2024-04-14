@@ -96,6 +96,10 @@
 <?php       }   ?>
         </footer>
     </div>
+    <div id="logout_modal">
+       <p>Logout</p>
+       <a href="/products/login"><i class="fa-solid fa-right-from-bracket"></i></a>
+    </div>
     <script src="/assets/admin_product.js"></script>    
 </body>
 </html>

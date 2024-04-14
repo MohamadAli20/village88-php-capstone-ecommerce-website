@@ -107,17 +107,16 @@
             margin: 0;
             padding: 0;
             display: none;
-            text-align: center;
+            text-align: left !important;
         }
                 #imagePreview .frame{
-                    width: 100px;
+                    width: 115px;
                     display: inline-block;
                     height: 140px;
                     padding: 0;
                     overflow: hidden;
                     text-align: center;
                     margin: 0;
-                    margin-right: 10px;
                     position: relative;
                 }
                 .fa-circle-xmark{
@@ -197,6 +196,36 @@
                 background: rgba(156, 137, 255, 1);
                 color: rgba(255, 255, 255, 1);
             }
+            /* Logout modal */
+            #logout_modal{
+                position: absolute;
+                top: 50px;
+                right: 10px;
+                font-size: 16px;
+                width: 200px;
+                height: 64px;
+                box-shadow: 0px 4.373316764831543px 12px 0px rgba(156, 137, 255, 0.28);
+                background-color: rgba(255, 255, 255, 1);
+                border-radius: 20px;
+                display: none;
+            }
+                #logout_modal p, #logout_modal i{
+                    display: inline-block;
+                    vertical-align: middle;
+                    color: rgba(120, 120, 120, 1);
+                    margin: 0;
+                    line-height: 65px;
+                }
+                #logout_modal p{
+                    width: 60%;
+                    margin-left: 20px;
+                }
+                #logout_modal i{
+                    font-size: 22px;
+                    color: rgba(208, 199, 253, 1);
+                    margin-right: 20px;
+                }
+    
     </style>
     <script>
         $(document).ready(function(){
@@ -221,6 +250,7 @@
             });
             $("#add_product").click(function(){
                 clearForm();
+                $("#uploadImage").css("display", "block");
                 $("#form_modal").css("display", "block");
                 $("#form_modal h2").text("Add a Product");
                 $("#form_modal").attr("action", "/dashboards/add_product");
@@ -229,11 +259,18 @@
             $("#close_icon").click(function(){
                 clearForm();
                 $("#form_modal").css("display", "none");
+                $("#upload_label span").remove();
             });
             $("input[value='Cancel']").click(function(){
                 clearForm();
                 $("#form_modal").css("display", "none");
+                $("#upload_label span").remove();
             });
+            $(".edit input[type='submit']").click(function(){
+                $("#uploadImage").css("display", "block");
+                $("#btnPreview").css("display", "block");
+                $("#btnHide").css("display", "none");
+            })
             
             let timer;
             $("#search").on('keyup', function(){
@@ -342,16 +379,17 @@
                             checkboxes[i].checked = true;
                         }
                     }
+                    $("#imagePreview").css("display", "none");
                     /*if the checked as main image is removed*/
                     setDefaultCheckbox();
                 };
-
             });
             $("#form_modal").submit(function(e){
                 e.preventDefault();
 
                 let className = $(this).attr("class");
                 if(className === "form_edit_product"){
+
                     let id = $(this).find("input[name='product_id']").val();
                     let name = $(this).find("input[name='name']").val();
                     let description = $(this).find("textarea[name='description']").val();
@@ -360,10 +398,10 @@
                     let stocks = $(this).find("input[name='stocks']").val();
 
                     let main_image = findChecked();
-                    let details = [id, name, description, category, price, stocks, main_image]
+                    let details = [id, name, description, category, price, stocks, main_image];
 
                     /*get the images existing image/s displayed*/
-                    let imageUrl = $(this).find("img");
+                    let imageUrl = $("#imagePreview").find("img");
                     let images = [];
                     for(let k = 0; k < imageUrl.length; k++){
                         let imagePath = $(imageUrl[k]).attr("src");
@@ -391,7 +429,7 @@
                                 if(y === id - 1){
                                     let product = $(displayProduct[y])[0];
                                     product.querySelector("figcaption").innerText = name;
-                                    product.querySelectorAll("p")[1].querySelector("span").innerText = price;
+                                    product.querySelectorAll("p")[1].querySelector("span").innerText = "$" + price;
                                     product.querySelectorAll("p")[2].innerText = category;
                                     product.querySelectorAll("p")[3].innerText = stocks;
                                     /*Ajax to retrieve and display product from the database*/
@@ -417,6 +455,7 @@
                             console.error(error);
                         }
                     });
+                    
                 }
                 if(className === "form_add_product"){
                     let formData = new FormData($("#form_modal")[0]);
@@ -441,6 +480,9 @@
             $("#uploadImage button").click(function(event) {
                 event.preventDefault();
                 $(this).siblings("input[type='file']").trigger('click');
+            });
+            $("#expand_more").click(function(){
+                $("#logout_modal").css("display", "block");
             });
         });
     </script>

@@ -19,6 +19,35 @@
                 border-top-right-radius: 11px;
                 border-bottom-right-radius: 11px;
             }
+            /* Logout modal */
+            #logout_modal{
+                position: absolute;
+                top: 50px;
+                right: 10px;
+                font-size: 16px;
+                width: 200px;
+                height: 64px;
+                box-shadow: 0px 4.373316764831543px 12px 0px rgba(156, 137, 255, 0.28);
+                background-color: rgba(255, 255, 255, 1);
+                border-radius: 20px;
+                display: none;
+            }
+                #logout_modal p, #logout_modal i{
+                    display: inline-block;
+                    vertical-align: middle;
+                    color: rgba(120, 120, 120, 1);
+                    margin: 0;
+                    line-height: 65px;
+                }
+                #logout_modal p{
+                    width: 60%;
+                    margin-left: 20px;
+                }
+                #logout_modal i{
+                    font-size: 22px;
+                    color: rgba(208, 199, 253, 1);
+                    margin-right: 20px;
+                }
     </style>
     <script>
         $(document).ready(function(){
@@ -54,6 +83,9 @@
                         console.error(error);
                     }
                 });
+            });
+            $("#expand_more").click(function(){
+                $("#logout_modal").css("display", "block");
             });
         });
     </script>

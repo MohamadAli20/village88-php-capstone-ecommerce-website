@@ -117,6 +117,7 @@ function removeImage(clickedCloseIcon){
         $("#imagePreview").css("display", "none");
         $("#uploadImage").children("p").text("No file choosen");
         $("#btnHide").css("display", "none");
+        $("#uploadImage").css("display", "block");
     }
     /*if the checked as main image is removed*/
     setDefaultCheckbox();

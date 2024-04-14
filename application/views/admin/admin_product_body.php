@@ -17,12 +17,12 @@
             <a href="?category=all">All Products</a>
         </p>
         <p>
-            <img src="/assets/fruits.png" alt="Fruit icon">
+            <img src="/assets/vegetables.png" alt="Vegetables icon">
             <span><?=$count['vegetables_total']?></span>
             <a href="?category=vegetables">Vegetables</a>
         </p>
         <p>
-            <img src="/assets/vegetables.png" alt="Vegetables icon">
+            <img src="/assets/fruits.png" alt="Fruit icon">
             <span><?=$count['fruits_total']?></span>
             <a href="?category=fruits">Fruits</a>
         </p>
@@ -81,7 +81,7 @@
             <p class="category"><?= $products[$i]['category']; ?></p>
             <p><?= $products[$i]['stocks']; ?></p>
             <p><?= $products[$i]['sold']; ?></p>
-            <div>
+            <div class="edit">
                 <input type="hidden" value="<?= $products[$i]['id']; ?>">
                 <input type="submit" value="Edit">
             </div>
@@ -145,6 +145,10 @@
             <input type="submit" value="Save">
         </footer>
     </form>
+    <div id="logout_modal">
+       <p>Logout</p>
+       <a href="/products/login"><i class="fa-solid fa-right-from-bracket"></i></a>
+    </div>
     <script src="/assets/admin_product.js"></script>    
 </body>
 </html>
