@@ -105,31 +105,36 @@
     </div>
     <!-- Modal to add and edit product -->
     <form id="form_modal" method="post" enctype="multipart/form-data">
-        <h2>Add a Product</h2>
+        <header>
+            <h2>Add a Product</h2>
+            <img id="close_icon" src="/assets/close_icon.png" alt="Close icon">
+        </header>
         <input type='hidden'name="product_id" value=''>
         <label>
             <input name="name" type="text" placeholder="Name" >
         </label>
         <textarea name="description" placeholder="Description"></textarea>
-        <label>Category
-            <select name="category" id="">
+        <div>
+            <select name="category">
+                <option disabled selected value="">Category</option>
                 <option value="Vegetables">Vegetables</option>
                 <option value="Fruits">Fruits</option>
                 <option value="Pork">Pork</option>
                 <option value="Beef">Beef</option>
                 <option value="Chicken">Chicken</option>
             </select>
-        </label>
-        <label>Price
-            <input name="price" type="text" placeholder="$">
-        </label>
-        <label>Stocks
-            <input name="stocks" type="text" placeholder="$">
-        </label>
+            <label>
+                <input name="price" type="text" placeholder="$">
+            </label>
+            <label>
+                <input name="stocks" type="text" placeholder="$">
+            </label>
+        </div>
         <p id="upload_label">Upload Images (4 max):</p>
         <div id="imagePreview">
         </div> 
         <label id="uploadImage">
+            <button>Choose Files</button>
             <input type="file" name="images[]" multiple accept="image/*" onchange="previewImages(event)">
             <p>No file choosen</p>
         </label>

@@ -22,82 +22,103 @@
                 border-top-right-radius: 11px;
                 border-bottom-right-radius: 11px;
             }
-
-        /* .show_category ul li{
-            display: inline-block;
-            width: 120px;
-            text-align: center;
-        }
-        .show_category form{
-            padding: 20px;
-            margin-bottom: 10px;
-        }
-        .show_category footer{
-            
-        }
-            .show_category a{
-                font-size: 16px;
-                border: 1px solid black;
-                padding: 0 10px;
-                text-decoration: none;
-                color: black;
-            } 
-        .show_category form figure, .show_category form p, .show_category form div{
-            width: 120px;
-            vertical-align: middle;
-        }*/
         #form_modal{
-            display: none;
             font-size: 16px;
-        }
-        .form_add_product,
-        .form_edit_product{
-            border: 1px solid black;
-            background-color: white;
+            color: rgba(125, 125, 125, 1);
             width: 500px;
             padding: 20px;
             position: absolute;
-            top: 50%;
+            top: 30%;
             left: 50%;
             transform: translate(-50%, -50%);
             display: none;
+            background: rgba(255, 255, 255, 1);
+            border-radius: 20px;
         }
-            .form_add_product h1, .form_edit_product h1,
-            .form_add_product label, .form_edit_product label,
-            .form_add_product textarea, .form_edit_product textarea,
-            .form_add_product input, .form_edit_product input,
-            .form_add_product select, .form_edit_product select{
-                display: block;
-                margin: 5px 0;
+            #form_modal header{
+                position: relative;
             }
-            .form_add_product label input, .form_edit_product label input,
-            .form_add_product textarea, .form_edit_product textarea{
+                #form_modal header h2, #form_modal header img{
+                    display: inline-block;
+                }
+                #form_modal header h2{
+                    margin-bottom: 10px;
+                }
+                #form_modal header img{
+                    position: absolute;
+                    right: 0;
+                    padding: 5px;
+                    border-radius: 100px;
+                }
+                #form_modal #close_icon:hover{
+                    background: rgba(125, 125, 125, 0.5);
+                    padding: 5px;
+                    border-radius: 100px;
+                }
+            #form_modal label,
+            #form_modal textarea,
+            #form_modal select{
+                display: block;
+                margin: 10px 0;
+            }
+            #form_modal label input,
+            #form_modal textarea{
                 width: 100%;
                 resize: none;
             }
-            .form_add_product textarea,
-            .form_edit_product textarea{
+            #form_modal textarea{
                 height: 100px;
                 overflow: auto;
             }
-            .form_add_product p,
-            .form_edit_product p{
+            #form_modal p{
                 display: block;
             }
+            #form_modal input,
+            #form_modal textarea,
+            #form_modal select{
+                border-radius: 10px;
+                border: 1px solid rgba(218, 211, 255, 1);
+                font-size: 16px;
+                padding: 10px 20px;
+            }
+            #form_modal div{
+                display: block;
+                text-align: right;
+                position: relative;
+            }
+                #form_modal div select{
+                    color: rgba(125, 125, 125, 1);
+                    width: 50%;
+                    position: absolute;
+                    left: 0;    
+                }
+                #form_modal div select,
+                #form_modal div label{
+                    display: inline-block;
+                }
+                #form_modal input[name='price'],
+                #form_modal input[name='stocks']{
+                    width: 110px;
+                }
+        #upload_label{
+            font-size: 14px;
+        }
         #imagePreview{
             margin: 0;
             padding: 0;
             display: none;
+            text-align: center;
         }
                 #imagePreview .frame{
                     width: 100px;
+                    display: inline-block;
                     height: 140px;
                     padding: 0;
                     overflow: hidden;
                     text-align: center;
                     margin: 0;
                     margin-right: 10px;
-                    position: relative; 
+                    position: relative;
                 }
                 .fa-circle-xmark{
                     position: absolute;
@@ -106,7 +127,8 @@
                 }
                 #imagePreview img{
                     height: 100px;
-                    border: 1px solid black;
+                    border-radius: 10px;
+                    border: 1px solid rgba(193, 193, 193, 1);
                 }
                 #imagePreview span,
                 #imagePreview .checkbox{
@@ -115,26 +137,35 @@
                 }
                 #imagePreview span{
                     width: 80px;
-                    font-size: 13px;
-                    line-height: 26px;
-                    height: 20px;
+                    font-size: 13.5px;
                 }
                 #imagePreview .checkbox{
-                    width: 10px;
+                    width: 20px;
                 }
-            #uploadImage{
-                position: relative;
+            #form_modal #uploadImage{
+                /* position: relative; */
+                border-radius: 10px;
+                border: 1px solid rgba(218, 211, 255, 1);
+                font-size: 16px;
+                padding: 0;
+                background: rgba(255, 255, 255, 1);
+                overflow: hidden;
             }
-                input[type="file"]{
-                    color: transparent;
+                #uploadImage button, #uploadImage p{
+                    display: inline-block;
+                    margin: 0 auto;
+                }
+                #uploadImage button{
+                    background: rgba(156, 137, 255, 1);
+                    border: none;
+                    padding: 10px 20px;
+                    color: rgba(255, 255, 255, 1);
+                }
+                #uploadImage input[type='file']{
+                    display: none;
                 }
                 #uploadImage p{
-                    position: absolute;
-                    top: 0;
-                    left: 120px;
-                    height: 100%;
-                    margin: 0;
-                    line-height: 27px;
+
                 }
         #form_modal footer{
             font-size: 16px;
@@ -148,16 +179,23 @@
                 display: inline-block;
             }
             #form_modal footer a{
-                text-decoration: underline;
-                color: gray;
+                color: rgba(156, 137, 255, 1) !important;
                 position: absolute;
                 line-height: 35px;
                 left: 0;
                 pointer-events: none;
-                opacity: 0.5;
+                background: none;
             }
             #form_modal footer #btnHide{
                 display: none;
+            }
+            #form_modal #cancel{
+                border: 1px solid rgba(226, 226, 226, 1);
+                color: rgba(177, 177, 177, 1);
+            }
+            #form_modal footer input[type='submit']{
+                background: rgba(156, 137, 255, 1);
+                color: rgba(255, 255, 255, 1);
             }
     </style>
     <script>
@@ -172,12 +210,14 @@
                     "pointer-events": "auto",
                     "cursor": "default"
                 });
+                $("#uploadImage").css("display", "none");
                 setDefaultCheckbox();
             });
             $("#btnHide").click(function(){
                 $("#imagePreview").css("display", "none");
                 $("#btnPreview").css("display", "block");
                 $("#btnHide").css("display", "none");
+                $("#uploadImage").css("display", "block");
             });
             $("#add_product").click(function(){
                 clearForm();
@@ -186,10 +226,15 @@
                 $("#form_modal").attr("action", "/dashboards/add_product");
                 $("#form_modal").attr("class", "form_add_product");
             });
+            $("#close_icon").click(function(){
+                clearForm();
+                $("#form_modal").css("display", "none");
+            });
             $("input[value='Cancel']").click(function(){
                 clearForm();
                 $("#form_modal").css("display", "none");
             });
+            
             let timer;
             $("#search").on('keyup', function(){
                 clearTimeout(timer);
@@ -390,8 +435,12 @@
                         }
                     });
                 }
-                
+
                 $("#form_modal").css("display", "none");
+            });
+            $("#uploadImage button").click(function(event) {
+                event.preventDefault();
+                $(this).siblings("input[type='file']").trigger('click');
             });
         });
     </script>
