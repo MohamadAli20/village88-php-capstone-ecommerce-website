@@ -1,7 +1,7 @@
 ###################
 ERD
 ###################
-<img src="https://drive.google.com/uc?export=view&id=10WUYOcz7VB0tEk3nOfdDYcI1qonWYdpO" alt="ERD of ECommerce Website">
+<img src="https://drive.google.com/uc?export=view&id=10WUYOcz7VB0tEk3nOfdDYcI1qonWYdpO" alt="ERD of ECommerce Website" height="200" width="300">
 
 ###################
 What is CodeIgniter
