@@ -14,9 +14,10 @@
 <?php               }
                 }
 ?>                  <figcaption>
-                        <p class="category"><?=$carts[$i]['category']?><span>$ <?=$carts[$i]['price']?></span></p>
+                        <input name="product_id" type="hidden" value="<?=$carts[$i]['product_id']?>">
+                        <p class="category"><?=$carts[$i]['name']?><span>$ <?=$carts[$i]['price']?></span></p>
                         <label>Quantity
-                            <input type="number" min="1" value="<?=$carts[$i]['quantity']?>">
+                            <input name="product_quantity" type="number" min="1" value="<?=$carts[$i]['quantity']?>">
                         </label>
                         <p class="total_amount">Total Amount<span>$ <?=$carts[$i]['total_amount']?></span></p>
                         <input type="hidden" value="<?=$carts[$i]['total_amount']?>">
@@ -105,6 +106,7 @@
                     <p id="total_fee"><span>Total Fee</span><span id="total_amount" class="fees"></span></p>
                     <input type="hidden" value="" name="total_fee">
                     <input id="proceed_checkout" type="submit" value="Proceed to Checkout">
+                    <input name="user_id" type="hidden" value="<?=$this->session->userdata('name')['user_id'];?>">
                 </form>
             </div>
         </div>
@@ -133,7 +135,7 @@
         </div>
         </main>
         <footer>
-            <p>Total Amount: <span>$45</span></p>
+            <p>Total Amount: <span id="payment_total_amount"></span></p>
             <input id="submit_payment" type="submit" value="Pay">
         </footer>
     </form>

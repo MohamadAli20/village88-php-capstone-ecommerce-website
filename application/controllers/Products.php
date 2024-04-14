@@ -8,6 +8,11 @@ class Products extends CI_Controller
 		parent::__construct();
 		$this->load->model('Product');
 	}
+	public function progress_page()
+	{
+		$this->load->view('index');
+	}
+
 	/*
 	* Render Catalog Page
 	*/
@@ -179,6 +184,16 @@ class Products extends CI_Controller
 		$data = $this->input->post();
 		$this->Product->insert_order($user_id, $data);
 		$this->Product->delete_cart_by_user_id($user_id); /*delete cart after adding order*/
+	}
+	/* update stocks of product after successful payment*/
+	public function change_product_stock()
+	{
+		$data = $this->input->post();
+		/*retrieve first the product */
+		$product = $this->get_product_by_value($data['productId']);
+		$sold = intval($product['sold']) + intval($data['productQty']);
+		$stocks = intval($product['stocks']) - intval($data['productQty']);
+		$this->Product->update_product_stock($stocks, $sold, $data['productId']);
 	}
 
 	/*

@@ -136,7 +136,7 @@
         */
         public function select_all_cart($user_id)
         {
-            $query = "SELECT carts.*, products.category, products.price, products.images, products.main_image 
+            $query = "SELECT carts.*, products.name, products.price, products.images, products.main_image 
                         FROM carts
                         LEFT JOIN products ON carts.product_id = products.id
                         WHERE carts.user_id = ?";
@@ -213,6 +213,16 @@
         {
             $query = "DELETE FROM carts WHERE user_id = ?";
             $this->db->query($query, $user_id);
+        }
+        public function update_product_stock($stocks, $sold, $product_id)
+        {
+            $query = "UPDATE products SET stocks = ?, sold = ? WHERE id = ?";
+            $values = array(
+                'stocks' => $stocks,
+                'sold' => $sold,
+                'id' => $product_id
+            );
+            $this->db->query($query, $values);
         }
         
         /*

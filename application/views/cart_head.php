@@ -501,6 +501,8 @@
                     });
                     $("#gray_background").css({"display": "block"});
                 }
+                let totalAmount = $("input[name='total_fee']").val();
+                $("#payment_total_amount").text("$"+totalAmount);
             });
 
             $("#submit_payment").click(function(){
@@ -534,7 +536,26 @@
                         console.error(error);
                     }
                 })
+
             });
+            let fig = $("figure");
+            for(let i = 0; i < fig.length; i++){
+                let productId = $(fig[i]).find("input[name='product_id']").val();
+                let productQty = $(fig[i]).find("input[name='product_quantity']").val();
+                
+                /*decrement the stocks after successful payment*/
+                $.ajax({
+                    url: "<?php echo base_url("/products/change_product_stock"); ?>",
+                    type: "POST",
+                    data: {productId, productQty},
+                    success: function(response){
+                        console.log(response);
+                    },
+                    error: function(xhr, status, error){
+                        console.error(error);
+                    }
+                });
+            }
         });
     </script>
 </head>
