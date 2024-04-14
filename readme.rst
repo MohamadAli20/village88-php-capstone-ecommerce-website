@@ -1,4 +1,9 @@
 ###################
+ERD
+###################
+<img src="https://drive.google.com/uc?export=view&id=10WUYOcz7VB0tEk3nOfdDYcI1qonWYdpO" alt="ERD of ECommerce Website">
+
+###################
 What is CodeIgniter
 ###################
 
