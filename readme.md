@@ -1,5 +1,5 @@
 ## Demo
-[Watch the video](https://www.youtube.com/watch?v=hbaPBph0XVo)
+[Watch the demo](https://www.youtube.com/watch?v=hbaPBph0XVo)
 
 
 ## ERD
