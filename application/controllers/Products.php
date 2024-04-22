@@ -8,10 +8,6 @@ class Products extends CI_Controller
 		parent::__construct();
 		$this->load->model('Product');
 	}
-	public function progress_page()
-	{
-		$this->load->view('index');
-	}
 
 	/*
 	* Render Catalog Page
